@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>إهداء خاص 💖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
@@ -12,6 +12,7 @@
       background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       color: #fff;
       text-align: center;
+      overflow-x: hidden;
     }
 
     .section {
@@ -51,62 +52,40 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .btn {
-      margin-top: 25px;
-      padding: 12px 25px;
-      background: #fff;
-      color: #e75480;
-      border-radius: 30px;
-      text-decoration: none;
-      font-size: 18px;
-    }
-
-    /* فيديوهات */
-    .videos {
-      width: 100%;
-      max-width: 700px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    video {
-      width: 100%;
-      border-radius: 20px;
-    }
-
-    /* زر الموسيقى */
-    .music-btn {
+    /* شاشة اللمسة */
+    .overlay {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .overlay button {
       background: #fff;
       color: #e75480;
       border: none;
-      padding: 10px 16px;
-      border-radius: 50px;
-      font-size: 16px;
+      padding: 15px 30px;
+      font-size: 20px;
+      border-radius: 40px;
       cursor: pointer;
     }
   </style>
 </head>
-<script>
-  const music = document.getElementById("bgMusic");
 
-  // أول ما المستخدم يلمس الشاشة، الصوت يشتغل
-  document.addEventListener("click", () => {
-    music.muted = false;
-    music.play();
-  }, { once: true });
-</script>
 <body>
 
-<!-- موسيقى الخلفية -->
-<audio id="bgMusic" autoplay loop muted>
+<!-- الموسيقى -->
+<audio id="bgMusic" loop>
   <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
 </audio>
 
-<button class="music-btn" onclick="toggleMusic()">🎵 موسيقى</button>
+<!-- شاشة اللمسة -->
+<div class="overlay" id="overlay">
+  <button onclick="startMusic()">💖 إلمسي هنا</button>
+</div>
 
 <div class="section">
   <h1>إلى أغلى إنسان في حياتي 💕</h1>
@@ -129,42 +108,4 @@
 </div>
 
 <div class="section">
-  <h2>ذكرياتنا 🎥💖</h2>
-
-  <div class="videos">
-    <!-- فيديو -->
-    <video controls>
-      <source src="video1.mp4" type="video/mp4">
-    </video>
-
-    <!-- انسخ السطر ده وزود فيديوهات تاني -->
-  </div>
-</div>
-
-<div class="section">
-  <h2>رسالة من قلبي ليكي 💌</h2>
-  <div class="heart">💖</div>
-  <p>
-    أتمنى أفضل جنبك دايمًا،
-    وأشاركك كل لحظة حلوة،
-    وأفضل أختارك كل يوم من جديد 🌸
-  </p>
-  <a href="#" class="btn">بحبك 🤍</a>
-</div>
-
-<script>
-  const music = document.getElementById("bgMusic");
-  let playing = false;
-
-  function toggleMusic() {
-    if (playing) {
-      music.pause();
-    } else {
-      music.play();
-    }
-    playing = !playing;
-  }
-</script>
-
-</body>
-</html>
+  <h2>رسالة من قلبي
