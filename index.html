@@ -1,188 +1,209 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>Mido & Dina | قصة حبنا 💖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mido & Dina - حبيبتي ملاك</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --accent-color: #ff0055;
+        }
 
-  <style>
-    :root {
-      --primary-color: #e75480;
-      --glass-bg: rgba(255, 255, 255, 0.15);
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #2c1e1e 0%, #121212 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #2c1e1e 0%, #121212 100%);
-      color: #fff;
-      text-align: center;
-      overflow-x: hidden;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    /* شاشة كلمة السر - تشبه الفيديو */
-    #lock-screen {
-      position: fixed;
-      inset: 0;
-      background: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1000') no-repeat center center/cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      transition: opacity 0.8s ease;
-    }
+        .heart-icon {
+            color: var(--accent-color);
+            font-size: 24px;
+        }
 
-    #lock-screen::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-    }
+        /* العداد الزمني */
+        .timer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
 
-    .login-card {
-      position: relative;
-      background: var(--glass-bg);
-      padding: 30px;
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
-      width: 85%;
-      max-width: 350px;
-    }
+        .timer-box {
+            background: var(--card-bg);
+            padding: 15px 5px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-    .login-card h2 { margin-top: 0; font-size: 24px; }
-    
-    .login-card input {
-      width: 100%;
-      padding: 12px;
-      margin: 20px 0;
-      border-radius: 10px;
-      border: none;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      text-align: center;
-      box-sizing: border-box;
-      outline: none;
-    }
+        .timer-num {
+            font-size: 22px;
+            font-weight: bold;
+            display: block;
+        }
 
-    .login-card button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      background: #ff0055;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 18px;
-    }
+        .timer-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
 
-    /* محتوى الصفحة الرئيسي */
-    #main-content {
-      display: none; /* مخفي حتى إدخال الكود */
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
+        /* مشغل الصوت */
+        .audio-player {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,0,85,0.3);
+        }
 
-    .section {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+        .song-info {
+            margin-bottom: 15px;
+        }
 
-    .heart {
-      font-size: 60px;
-      animation: pulse 1.5s infinite;
-      margin: 20px 0;
-      color: #ff0055;
-    }
+        .song-title {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            color: var(--accent-color);
+        }
 
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
+        .artist-name {
+            font-size: 12px;
+            opacity: 0.7;
+        }
 
-    audio {
-      margin-top: 20px;
-      filter: invert(1);
-      width: 280px;
-    }
-  </style>
+        audio {
+            width: 100%;
+            height: 40px;
+            filter: invert(1) hue-rotate(180deg); /* تحسين شكل المشغل ليناسب التصميم */
+        }
+
+        /* قسم الذكريات */
+        .memories-grid {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .memory-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .memory-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .memory-info {
+            padding: 15px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .memory-date {
+            font-size: 10px;
+            background: var(--accent-color);
+            padding: 2px 8px;
+            border-radius: 5px;
+            float: left;
+        }
+
+        .memory-title {
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .quote-card {
+            background: linear-gradient(45deg, #4b001a, #80002a);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            line-height: 1.8;
+            margin-top: 10px;
+            font-style: italic;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+    </style>
 </head>
 <body>
 
-<div id="lock-screen">
-  <div class="login-card">
-    <div style="font-size: 40px; margin-bottom: 10px;">🔐</div>
-    <h2>Mido & Dina</h2>
-    <input type="password" id="passwordInput" placeholder="كلمة السر..">
-    <button onclick="checkPassword()">دخول</button>
-    <p id="error-msg" style="color: #ffda79; font-size: 14px; display: none; margin-top: 10px;">كلمة السر غلط يا روحي! ❌</p>
-  </div>
-</div>
+    <div class="header">
+        <h1>❤️ Mido & Dalia</h1>
+    </div>
 
-<div id="main-content">
-  <audio id="bgMusic" loop>
-    <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
-  </audio>
+    <div class="timer-container">
+        <div class="timer-box"><span class="timer-num">00</span><span class="timer-label">سنة</span></div>
+        <div class="timer-box"><span class="timer-num">11</span><span class="timer-label">شهر</span></div>
+        <div class="timer-box"><span class="timer-num">29</span><span class="timer-label">يوم</span></div>
+        <div class="timer-box"><span class="timer-num" id="seconds">00</span><span class="timer-label">ثانية</span></div>
+    </div>
 
-  <div class="section">
-    <h1>إلى أغلى إنسان في حياتي 💕</h1>
-    <div class="heart">❤️</div>
-    <p>
-      الصفحة دي معمولة مخصوص علشانك…<br>
-      علشان أقولك إنك نعمة كبيرة في حياتي.
-    </p>
-    <p style="font-size: 14px;">🎵 الآن تستمع إلى: حبيبتي ملاك</p>
-  </div>
+    <div class="audio-player">
+        <div class="song-info">
+            <span class="song-title">🎵 حبيبتي ملاك</span>
+            <span class="artist-name">عمرو دياب</span>
+        </div>
+        <audio controls>
+            <source src="http://googleusercontent.com/file_content/0" type="audio/mpeg">
+            متصفحك لا يدعم مشغل الصوت.
+        </audio>
+    </div>
 
-  <div class="section">
-    <h2>عارفة إيه أكتر حاجة؟</h2>
-    <div class="heart">💞</div>
-    <p>
-      "أنا وهي وزيها مين.. دي أجمل حاجة في الدنيا تشوفها العين.." 🤍
-    </p>
-  </div>
-</div>
+    <div class="memories-grid">
+        <div class="memory-card">
+            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400" alt="ذكرى">
+            <div class="memory-info">
+                <span class="memory-date">2025-01-01</span>
+                <span class="memory-title">أول مقابلة</span>
+                <small>اليوم الذي بدأت فيه قصتنا</small>
+            </div>
+        </div>
 
-<script>
-  function checkPassword() {
-    const pass = document.getElementById('passwordInput').value;
-    const correctPass = "762003"; // يمكنك تغيير كلمة السر من هنا
-    const music = document.getElementById('bgMusic');
+        <div class="quote-card">
+            "أنا وهي وزيها مين.. دي أجمل حاجة في الدنيا تشوفها العين.. حبيبتي اللحظة في وجودها تساوي سنين."
+        </div>
+    </div>
 
-    if (pass === correctPass) {
-      // إخفاء شاشة القفل
-      document.getElementById('lock-screen').style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('lock-screen').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        setTimeout(() => {
-          document.getElementById('main-content').style.opacity = '1';
-        }, 50);
-        
-        // تشغيل الموسيقى تلقائياً بعد الضغط على دخول
-        music.play().catch(error => {
-          console.log("التشغيل التلقائي يحتاج تفاعل أولاً، ولكن الضغط على الزر كافٍ.");
-        });
-      }, 800);
-    } else {
-      document.getElementById('error-msg').style.display = 'block';
-    }
-  }
-
-  // السماح بالدخول عند الضغط على زر Enter
-  document.getElementById('passwordInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-      checkPassword();
-    }
-  });
-</script>
+    <script>
+        // تحديث الثواني بشكل حي
+        setInterval(() => {
+            const secElement = document.getElementById('seconds');
+            let currentSec = parseInt(secElement.innerText);
+            currentSec = (currentSec + 1) % 60;
+            secElement.innerText = currentSec.toString().padStart(2, '0');
+        }, 1000);
+    </script>
 
 </body>
 </html>
