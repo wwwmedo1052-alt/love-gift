@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Mido & Dina | قصة حبنا 💖</title>
+  <title>Medo & Dalia | قصة حبنا 💖</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -20,7 +20,7 @@
       overflow-x: hidden;
     }
 
-    /* شاشة كلمة السر - تشبه الفيديو */
+    /* شاشة كلمة السر */
     #lock-screen {
       position: fixed;
       inset: 0;
@@ -80,18 +80,40 @@
 
     /* محتوى الصفحة الرئيسي */
     #main-content {
-      display: none; /* مخفي حتى إدخال الكود */
+      display: none;
       opacity: 0;
       transition: opacity 1s ease;
+      padding: 20px;
     }
 
     .section {
-      min-height: 100vh;
+      padding: 40px 10px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      padding: 20px;
+    }
+
+    .video-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--glass-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 20px 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .video-container h3 {
+      padding: 15px;
+      margin: 0;
+      background: rgba(0,0,0,0.4);
+      font-size: 20px;
+      color: #ffda79;
+    }
+
+    video {
+      width: 100%;
+      display: block;
     }
 
     .heart {
@@ -103,14 +125,15 @@
 
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+      50% { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
 
     audio {
-      margin-top: 20px;
       filter: invert(1);
-      width: 280px;
+      width: 100%;
+      max-width: 300px;
+      margin: 20px 0;
     }
   </style>
 </head>
@@ -119,7 +142,7 @@
 <div id="lock-screen">
   <div class="login-card">
     <div style="font-size: 40px; margin-bottom: 10px;">🔐</div>
-    <h2>Mido & Dalia</h2>
+    <h2>Medo & Dalia</h2>
     <input type="password" id="passwordInput" placeholder="كلمة السر..">
     <button onclick="checkPassword()">دخول</button>
     <p id="error-msg" style="color: #ffda79; font-size: 14px; display: none; margin-top: 10px;">كلمة السر غلط يا روحي! ❌</p>
@@ -134,6 +157,15 @@
   <div class="section">
     <h1>إلى أغلى إنسان في حياتي 💕</h1>
     <div class="heart">❤️</div>
+    
+    <div class="video-container">
+      <h3>احلي كتكوته</h3>
+      <video controls>
+        <source src="1000448771.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+    </div>
+
     <p>
       الصفحة دي معمولة مخصوص علشانك…<br>
       علشان أقولك إنك نعمة كبيرة في حياتي.
@@ -153,34 +185,26 @@
 <script>
   function checkPassword() {
     const pass = document.getElementById('passwordInput').value;
-    const correctPass = "762003"; // يمكنك تغيير كلمة السر من هنا
+    const correctPass = "762003"; 
     const music = document.getElementById('bgMusic');
 
     if (pass === correctPass) {
-      // إخفاء شاشة القفل
       document.getElementById('lock-screen').style.opacity = '0';
       setTimeout(() => {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         setTimeout(() => {
           document.getElementById('main-content').style.opacity = '1';
+          music.play().catch(e => console.log("Music play blocked"));
         }, 50);
-        
-        // تشغيل الموسيقى تلقائياً بعد الضغط على دخول
-        music.play().catch(error => {
-          console.log("التشغيل التلقائي يحتاج تفاعل أولاً، ولكن الضغط على الزر كافٍ.");
-        });
       }, 800);
     } else {
       document.getElementById('error-msg').style.display = 'block';
     }
   }
 
-  // السماح بالدخول عند الضغط على زر Enter
   document.getElementById('passwordInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-      checkPassword();
-    }
+    if (e.key === 'Enter') checkPassword();
   });
 </script>
 
