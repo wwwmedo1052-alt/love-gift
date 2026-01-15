@@ -2,29 +2,31 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Medo & Dalia | قصة حبنا 💖</title>
+  <title>Medo & Dalia | 💖</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     :root {
-      --primary-color: #e75480;
-      --glass-bg: rgba(255, 255, 255, 0.15);
+      --primary-color: #ff0055;
+      --glass-bg: rgba(255, 255, 255, 0.1);
     }
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #2c1e1e 0%, #121212 100%);
-      color: #fff;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #1a0f0f 0%, #000000 100%);
+      color: white;
       text-align: center;
-      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
 
-    /* شاشة كلمة السر */
+    /* شاشة القفل */
     #lock-screen {
       position: fixed;
       inset: 0;
-      background: #1a1a1a;
+      background: #121212;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -32,62 +34,68 @@
       transition: opacity 0.8s ease;
     }
 
-    .login-card {
+    .login-box {
       background: var(--glass-bg);
       padding: 30px;
       border-radius: 20px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.1);
       width: 85%;
       max-width: 350px;
     }
 
-    .login-card input {
-      width: 100%;
+    h2 { color: var(--primary-color); }
+
+    input {
+      width: 90%;
       padding: 12px;
-      margin: 20px 0;
       border-radius: 10px;
       border: none;
+      margin: 20px 0;
+      text-align: center;
       background: rgba(255,255,255,0.2);
       color: #fff;
-      text-align: center;
-      outline: none;
+      font-size: 18px;
     }
 
-    .login-card button {
-      width: 100%;
+    button {
+      width: 90%;
       padding: 12px;
-      border-radius: 10px;
-      border: none;
-      background: #ff0055;
+      background: var(--primary-color);
       color: white;
-      font-weight: bold;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
     }
 
-    /* محتوى الصفحة الرئيسي */
+    /* المحتوى */
     #main-content {
       display: none;
       opacity: 0;
       transition: opacity 1s ease;
+      width: 100%;
+      max-width: 500px;
       padding: 20px;
     }
 
-    .video-container {
+    .video-box {
       width: 100%;
-      max-width: 400px;
-      background: var(--glass-bg);
       border-radius: 20px;
       overflow: hidden;
-      margin: 20px auto;
+      background: #000;
+      margin: 25px 0;
       border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    .video-container h3 {
+    .video-title {
       padding: 15px;
       margin: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.6);
       color: #ffda79;
+      font-size: 20px;
     }
 
     video {
@@ -98,7 +106,7 @@
     .heart {
       font-size: 50px;
       animation: pulse 1.5s infinite;
-      color: #ff0055;
+      margin: 20px 0;
     }
 
     @keyframes pulse {
@@ -111,54 +119,61 @@
 <body>
 
 <div id="lock-screen">
-  <div class="login-card">
+  <div class="login-box">
     <h2>Medo & Dalia</h2>
-    <input type="password" id="passwordInput" placeholder="كلمة السر..">
-    <button onclick="checkPassword()">دخول</button>
-    <p id="error-msg" style="color: #ffda79; display: none; margin-top: 10px;">كلمة السر غلط! ❌</p>
+    <input type="password" id="pass" placeholder="كلمة السر">
+    <br>
+    <button onclick="unlock()">دخول</button>
+    <p id="error" style="color: yellow; display: none; font-size: 14px; margin-top: 10px;">كلمة السر غلط! ❌</p>
   </div>
 </div>
 
 <div id="main-content">
-  <audio id="bgMusic" loop>
-    <source src="http://googleusercontent.com/file_content/1" type="audio/mpeg">
+  <audio id="music" loop>
+    <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
   </audio>
 
-  <h1>إلى أغلى إنسانة 💕</h1>
+  <h1>إلى أغلى إنسانة في حياتي 💕</h1>
   <div class="heart">❤️</div>
-  
-  <div class="video-container">
-    <h3>احلي كتكوته</h3>
-    <video id="myVideo" controls playsinline>
-      <source src="http://googleusercontent.com/file_content/0" type="video/mp4">
-      متصفحك لا يدعم الفيديو.
+
+  <div class="video-box">
+    <h3 class="video-title">احلي كتكوته</h3>
+    <video id="vid" controls playsinline>
+      <source src="VID-20260107-WA0010.mp4" type="video/mp4">
+      متصفحك لا يدعم تشغيل الفيديو.
     </video>
   </div>
 
-  <p>أنتِ أجمل حاجة حصلت في حياتي 🤍</p>
+  <p>وجودك هو السعادة الحقيقية يا داليا 🤍</p>
 </div>
 
 <script>
-  function checkPassword() {
-    const pass = document.getElementById('passwordInput').value;
-    const music = document.getElementById('bgMusic');
-    const video = document.getElementById('myVideo');
+  function unlock() {
+    const p = document.getElementById('pass').value;
+    const music = document.getElementById('music');
+    const video = document.getElementById('vid');
 
-    if (pass === "762003") {
+    if (p === "762003") {
       document.getElementById('lock-screen').style.opacity = '0';
       setTimeout(() => {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         setTimeout(() => {
           document.getElementById('main-content').style.opacity = '1';
-          music.play(); // تشغيل الأغنية
-          video.play(); // تشغيل الفيديو تلقائياً عند الدخول
+          // تشغيل الموسيقى والفيديو فور الدخول
+          music.play();
+          video.play();
         }, 50);
       }, 800);
     } else {
-      document.getElementById('error-msg').style.display = 'block';
+      document.getElementById('error').style.display = 'block';
     }
   }
+
+  // دعم الدخول عبر زر Enter
+  document.getElementById('pass').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') unlock();
+  });
 </script>
 
 </body>
