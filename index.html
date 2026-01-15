@@ -61,6 +61,7 @@
       font-size: 18px;
     }
 
+    /* فيديوهات */
     .videos {
       width: 100%;
       max-width: 700px;
@@ -74,7 +75,7 @@
       border-radius: 20px;
     }
 
-  /* زر الموسيقى */
+    /* زر الموسيقى */
     .music-btn {
       position: fixed;
       bottom: 20px;
@@ -86,22 +87,13 @@
       border-radius: 50px;
       font-size: 16px;
       cursor: pointer;
-      }
-      z-index: 999;
     }
   </style>
 </head>
 <script>
   const music = document.getElementById("bgMusic");
 
-  // محاولة تشغيل تلقائي
-  window.addEventListener("load", () => {
-    music.play().catch(() => {
-      // في حالة المتصفح منع التشغيل
-    });
-  });
 
-  // أول لمسة في الصفحة تشغل الصوت كامل
   document.addEventListener("click", () => {
     music.muted = false;
     music.play();
@@ -109,12 +101,12 @@
 </script>
 <body>
 
-<!-- موسيقى الخلفية -->
-  <audio id="bgMusic" autoplay loop muted playsinline>
+<audio id="bgMusic" autoplay loop muted>
   <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
-  </audio>
+</audio>
 
 <button class="music-btn" onclick="toggleMusic()">🎵 موسيقى</button>
+
 <div class="section">
   <h1>إلى أغلى إنسان في حياتي 💕</h1>
   <div class="heart">❤️</div>
@@ -137,10 +129,14 @@
 
 <div class="section">
   <h2>ذكرياتنا 🎥💖</h2>
+
   <div class="videos">
+    
     <video controls>
       <source src="video1.mp4" type="video/mp4">
     </video>
+
+    
   </div>
 </div>
 
@@ -158,25 +154,6 @@
 <script>
   const music = document.getElementById("bgMusic");
   let playing = false;
-
-  // محاولة تشغيل تلقائي
-  window.addEventListener("load", () => {
-    music.muted = false;
-    music.play().then(() => {
-      playing = true;
-    }).catch(() => {
-      // لو المتصفح منع التشغيل
-    });
-  });
-
-  // تشغيل الموسيقى أول لمسة
-  document.addEventListener("click", () => {
-    if (!playing) {
-      music.muted = false;
-      music.play();
-      playing = true;
-    }
-  }, { once: true });
 
   function toggleMusic() {
     if (playing) {
