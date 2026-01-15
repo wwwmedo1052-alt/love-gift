@@ -5,126 +5,62 @@
   <title>Medo & Dalia | 💖</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    :root {
-      --primary-color: #ff0055;
-      --glass-bg: rgba(255, 255, 255, 0.1);
+    :root { --primary: #ff0055; }
+    body { 
+      margin: 0; 
+      font-family: 'Segoe UI', Tahoma, sans-serif; 
+      background: #0b0b0b; 
+      color: white; 
+      text-align: center; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
     }
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(135deg, #1a0f0f 0%, #000000 100%);
-      color: white;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
+    
     /* شاشة القفل */
     #lock-screen {
-      position: fixed;
-      inset: 0;
-      background: #121212;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      transition: opacity 0.8s ease;
+      position: fixed; inset: 0; background: #121212;
+      display: flex; justify-content: center; align-items: center; z-index: 1000;
+      transition: 0.5s;
     }
-
-    .login-box {
-      background: var(--glass-bg);
-      padding: 30px;
-      border-radius: 20px;
-      backdrop-filter: blur(15px);
+    .login-box { 
+      background: rgba(255,255,255,0.05); 
+      padding: 35px; 
+      border-radius: 25px; 
+      backdrop-filter: blur(15px); 
       border: 1px solid rgba(255,255,255,0.1);
-      width: 85%;
-      max-width: 350px;
+      width: 85%; max-width: 320px; 
     }
-
-    h2 { color: var(--primary-color); }
-
-    input {
-      width: 90%;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      margin: 20px 0;
-      text-align: center;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      font-size: 18px;
+    input { 
+      width: 100%; padding: 12px; margin: 20px 0; 
+      border-radius: 12px; border: none; text-align: center; 
+      background: rgba(255,255,255,0.1); color: white; font-size: 18px;
     }
-
-    button {
-      width: 90%;
-      padding: 12px;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 18px;
+    button { 
+      width: 100%; padding: 12px; background: var(--primary); 
+      color: white; border: none; border-radius: 12px; 
+      cursor: pointer; font-weight: bold; font-size: 18px;
     }
 
     /* المحتوى */
-    #main-content {
-      display: none;
-      opacity: 0;
-      transition: opacity 1s ease;
-      width: 100%;
-      max-width: 500px;
-      padding: 20px;
+    #main-content { display: none; padding: 20px; width: 100%; max-width: 500px; opacity: 0; transition: 1s; }
+    .video-card { 
+      width: 100%; background: #1a1a1a; border-radius: 20px; 
+      overflow: hidden; box-shadow: 0 10px 30px rgba(255, 0, 85, 0.3); margin: 20px 0;
     }
-
-    .video-box {
-      width: 100%;
-      border-radius: 20px;
-      overflow: hidden;
-      background: #000;
-      margin: 25px 0;
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .video-title {
-      padding: 15px;
-      margin: 0;
-      background: rgba(0,0,0,0.6);
-      color: #ffda79;
-      font-size: 20px;
-    }
-
-    video {
-      width: 100%;
-      display: block;
-    }
-
-    .heart {
-      font-size: 50px;
-      animation: pulse 1.5s infinite;
-      margin: 20px 0;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
+    .video-header { padding: 15px; background: rgba(0,0,0,0.5); color: #ffda79; font-size: 22px; font-weight: bold; }
+    video { width: 100%; display: block; border-bottom: 3px solid var(--primary); }
+    .heart { font-size: 50px; animation: pulse 1.5s infinite; margin: 15px 0; color: var(--primary); }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
   </style>
 </head>
 <body>
 
 <div id="lock-screen">
   <div class="login-box">
-    <h2>Medo & Dalia</h2>
+    <h2 style="color: var(--primary);">Medo & Dalia</h2>
     <input type="password" id="pass" placeholder="كلمة السر">
-    <br>
-    <button onclick="unlock()">دخول</button>
-    <p id="error" style="color: yellow; display: none; font-size: 14px; margin-top: 10px;">كلمة السر غلط! ❌</p>
+    <button onclick="unlock()">دخول 💖</button>
   </div>
 </div>
 
@@ -133,18 +69,18 @@
     <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
   </audio>
 
-  <h1>إلى أغلى إنسانة في حياتي 💕</h1>
+  <h1>أغلى إنسانة في حياتي 💕</h1>
   <div class="heart">❤️</div>
 
-  <div class="video-box">
-    <h3 class="video-title">احلي كتكوته</h3>
-    <video id="vid" controls playsinline>
-      <source src="VID-20260107-WA0010.mp4" type="video/mp4">
+  <div class="video-card">
+    <div class="video-header">احلي كتكوته</div>
+    <video id="vid" controls playsinline preload="auto">
+      <source src="20260107-WA001.mp4" type="video/mp4">
       متصفحك لا يدعم تشغيل الفيديو.
     </video>
   </div>
-
-  <p>وجودك هو السعادة الحقيقية يا داليا 🤍</p>
+  
+  <p style="font-size: 18px; line-height: 1.6;">"أنا وهي وزيها مين.. دي أجمل حاجة في الدنيا تشوفها العين.." 🤍</p>
 </div>
 
 <script>
@@ -154,26 +90,28 @@
     const video = document.getElementById('vid');
 
     if (p === "762003") {
+      // إخفاء شاشة القفل وإظهار المحتوى
       document.getElementById('lock-screen').style.opacity = '0';
       setTimeout(() => {
         document.getElementById('lock-screen').style.display = 'none';
-        document.getElementById('main-content').style.display = 'block';
-        setTimeout(() => {
-          document.getElementById('main-content').style.opacity = '1';
-          // تشغيل الموسيقى والفيديو فور الدخول
-          music.play();
-          video.play();
-        }, 50);
-      }, 800);
+        const main = document.getElementById('main-content');
+        main.style.display = 'block';
+        setTimeout(() => { main.style.opacity = '1'; }, 50);
+
+        // تشغيل الموسيقى والفيديو معاً
+        music.play();
+        video.muted = false; // التأكد من أن الصوت يعمل
+        video.play().catch(err => {
+            console.log("المتصفح يطلب ضغطة يدوية على الفيديو");
+        });
+      }, 500);
     } else {
-      document.getElementById('error').style.display = 'block';
+      alert("كلمة السر خطأ يا روحي! ❌");
     }
   }
 
-  // دعم الدخول عبر زر Enter
-  document.getElementById('pass').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') unlock();
-  });
+  // دعم زر Enter
+  document.getElementById('pass').addEventListener('keypress', (e) => { if(e.key === 'Enter') unlock(); });
 </script>
 
 </body>
