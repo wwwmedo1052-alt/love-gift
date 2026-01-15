@@ -74,17 +74,7 @@
       border-radius: 20px;
     }
 
-    .music-btn {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: #fff;
-      color: #e75480;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 50px;
-      font-size: 16px;
-      cursor: pointer;
+  
       z-index: 999;
     }
   </style>
@@ -92,20 +82,20 @@
 <script>
   const music = document.getElementById("bgMusic");
 
-  // أول ما المستخدم يلمس الشاشة، الصوت يشتغل
-  document.addEventListener("click", () => {
+  // تشغيل الموسيقى بعد 1 ثانية
+  setTimeout(() => {
     music.muted = false;
     music.play();
-  }, { once: true });
+  }, 1000);
 </script>
 <body>
 
 <!-- موسيقى الخلفية -->
-<audio id="bgMusic" autoplay loop muted>
+  
+<audio id="bgMusic" loop muted>
   <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
 </audio>
 
-<button class="music-btn" onclick="toggleMusic()">🎵 موسيقى</button>
 
 <div class="section">
   <h1>إلى أغلى إنسان في حياتي 💕</h1>
