@@ -24,7 +24,7 @@
     #lock-screen {
       position: fixed;
       inset: 0;
-      background: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1000') no-repeat center center/cover;
+      background: #1a1a1a;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -32,16 +32,7 @@
       transition: opacity 0.8s ease;
     }
 
-    #lock-screen::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-    }
-
     .login-card {
-      position: relative;
       background: var(--glass-bg);
       padding: 30px;
       border-radius: 20px;
@@ -51,8 +42,6 @@
       max-width: 350px;
     }
 
-    .login-card h2 { margin-top: 0; font-size: 24px; }
-    
     .login-card input {
       width: 100%;
       padding: 12px;
@@ -62,7 +51,6 @@
       background: rgba(255,255,255,0.2);
       color: #fff;
       text-align: center;
-      box-sizing: border-box;
       outline: none;
     }
 
@@ -75,7 +63,6 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
-      font-size: 18px;
     }
 
     /* محتوى الصفحة الرئيسي */
@@ -86,20 +73,13 @@
       padding: 20px;
     }
 
-    .section {
-      padding: 40px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
     .video-container {
       width: 100%;
       max-width: 400px;
       background: var(--glass-bg);
       border-radius: 20px;
       overflow: hidden;
-      margin: 20px 0;
+      margin: 20px auto;
       border: 1px solid rgba(255,255,255,0.1);
     }
 
@@ -107,7 +87,6 @@
       padding: 15px;
       margin: 0;
       background: rgba(0,0,0,0.4);
-      font-size: 20px;
       color: #ffda79;
     }
 
@@ -117,9 +96,8 @@
     }
 
     .heart {
-      font-size: 60px;
+      font-size: 50px;
       animation: pulse 1.5s infinite;
-      margin: 20px 0;
       color: #ff0055;
     }
 
@@ -128,84 +106,59 @@
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
     }
-
-    audio {
-      filter: invert(1);
-      width: 100%;
-      max-width: 300px;
-      margin: 20px 0;
-    }
   </style>
 </head>
 <body>
 
 <div id="lock-screen">
   <div class="login-card">
-    <div style="font-size: 40px; margin-bottom: 10px;">🔐</div>
     <h2>Medo & Dalia</h2>
     <input type="password" id="passwordInput" placeholder="كلمة السر..">
     <button onclick="checkPassword()">دخول</button>
-    <p id="error-msg" style="color: #ffda79; font-size: 14px; display: none; margin-top: 10px;">كلمة السر غلط يا روحي! ❌</p>
+    <p id="error-msg" style="color: #ffda79; display: none; margin-top: 10px;">كلمة السر غلط! ❌</p>
   </div>
 </div>
 
 <div id="main-content">
   <audio id="bgMusic" loop>
-    <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
+    <source src="http://googleusercontent.com/file_content/1" type="audio/mpeg">
   </audio>
 
-  <div class="section">
-    <h1>إلى أغلى إنسان في حياتي 💕</h1>
-    <div class="heart">❤️</div>
-    
-    <div class="video-container">
-      <h3>احلي كتكوته</h3>
-      <video controls>
-        <source src="1000448771.mp4" type="video/mp4">
-      
-      </video>
-    </div>
-
-    <p>
-      الصفحة دي معمولة مخصوص علشانك…<br>
-      علشان أقولك إنك نعمة كبيرة في حياتي.
-    </p>
-    <p style="font-size: 14px;">🎵 الآن تستمع إلى: حبيبتي ملاك</p>
+  <h1>إلى أغلى إنسانة 💕</h1>
+  <div class="heart">❤️</div>
+  
+  <div class="video-container">
+    <h3>احلي كتكوته</h3>
+    <video id="myVideo" controls playsinline>
+      <source src="http://googleusercontent.com/file_content/0" type="video/mp4">
+      متصفحك لا يدعم الفيديو.
+    </video>
   </div>
 
-  <div class="section">
-    <h2>عارفة إيه أكتر حاجة؟</h2>
-    <div class="heart">💞</div>
-    <p>
-      "أنا وهي وزيها مين.. دي أجمل حاجة في الدنيا تشوفها العين.." 🤍
-    </p>
-  </div>
+  <p>أنتِ أجمل حاجة حصلت في حياتي 🤍</p>
 </div>
 
 <script>
   function checkPassword() {
     const pass = document.getElementById('passwordInput').value;
-    const correctPass = "762003"; 
     const music = document.getElementById('bgMusic');
+    const video = document.getElementById('myVideo');
 
-    if (pass === correctPass) {
+    if (pass === "762003") {
       document.getElementById('lock-screen').style.opacity = '0';
       setTimeout(() => {
         document.getElementById('lock-screen').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         setTimeout(() => {
           document.getElementById('main-content').style.opacity = '1';
-          music.play().catch(e => console.log("Music play blocked"));
+          music.play(); // تشغيل الأغنية
+          video.play(); // تشغيل الفيديو تلقائياً عند الدخول
         }, 50);
       }, 800);
     } else {
       document.getElementById('error-msg').style.display = 'block';
     }
   }
-
-  document.getElementById('passwordInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') checkPassword();
-  });
 </script>
 
 </body>
