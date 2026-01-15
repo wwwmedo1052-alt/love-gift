@@ -82,12 +82,19 @@
     }
   </style>
 </head>
+<script>
+  const music = document.getElementById("bgMusic");
 
+  // أول ما المستخدم يلمس الشاشة، الصوت يشتغل
+  document.addEventListener("click", () => {
+    music.muted = false;
+    music.play();
+  }, { once: true });
 <body>
 
 <!-- موسيقى في الخلفية -->
-<audio id="bgMusic" loop>
-  <source src="music.mp3" type="audio/mpeg">
+<audio id="bgMusic" autoplay loop muted>
+  <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
 </audio>
 
 <button class="music-btn" onclick="toggleMusic()">🎵 موسيقى</button>
