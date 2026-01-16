@@ -1,128 +1,174 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>Medo & Dalia | 💖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root { --primary: #ff0055; }
-    body { 
-      margin: 0; 
-      font-family: 'Segoe UI', Tahoma, sans-serif; 
-      background: #0b0b0b; 
-      color: white; 
-      text-align: center; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      min-height: 100vh;
-    }
-    
-    /* شاشة القفل */
-    #lock-screen {
-      position: fixed; inset: 0; background: #121212;
-      display: flex; justify-content: center; align-items: center; z-index: 1000;
-      transition: 0.5s;
-    }
-    .login-box { 
-      background: rgba(255,255,255,0.05); 
-      padding: 35px; 
-      border-radius: 25px; 
-      backdrop-filter: blur(15px); 
-      border: 1px solid rgba(255,255,255,0.1);
-      width: 85%; max-width: 320px; 
-    }
-    input { 
-      width: 100%; padding: 12px; margin: 20px 0; 
-      border-radius: 12px; border: none; text-align: center; 
-      background: rgba(255,255,255,0.1); color: white; font-size: 18px;
-      outline: none;
-    }
-    button { 
-      width: 100%; padding: 12px; background: var(--primary); 
-      color: white; border: none; border-radius: 12px; 
-      cursor: pointer; font-weight: bold; font-size: 18px;
-    }
-
-    /* المحتوى */
-    #main-content { display: none; padding: 20px; width: 100%; max-width: 500px; opacity: 0; transition: 1s; }
-    .video-card { 
-      width: 100%; background: #1a1a1a; border-radius: 20px; 
-      overflow: hidden; box-shadow: 0 10px 30px rgba(255, 0, 85, 0.3); margin: 20px 0;
-    }
-    .video-header { padding: 15px; background: rgba(0,0,0,0.5); color: #ffda79; font-size: 22px; font-weight: bold; }
-    
-    /* إعدادات الفيديو لضمان ظهوره بشكل جيد */
-    video { 
-      width: 100%; 
-      max-height: 70vh; 
-      display: block; 
-      background: #000;
-      border-bottom: 3px solid var(--primary); 
-    }
-
-    .heart { font-size: 50px; animation: pulse 1.5s infinite; margin: 15px 0; color: var(--primary); }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أجمل هدية</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div id="lock-screen">
-  <div class="login-box">
-    <h2 style="color: var(--primary);">Medo & Dalia</h2>
-    <input type="password" id="pass" placeholder="كلمة السر">
-    <button onclick="unlock()">دخول 💖</button>
-  </div>
-</div>
+    <div id="page1" class="page active">
+        <div class="lock-container">
+            <div class="lock-icon">🔓</div>
+            <h2>Enter Password</h2>
+            <p>💖 Unlock 💖</p>
+            <input type="password" id="passwordInput" placeholder="Password 🔑">
+            <button onclick="checkPassword()">🔓 Unlock</button>
+            <div class="hearts">❤️❤️❤️❤️❤️</div>
+        </div>
+    </div>
 
-<div id="main-content">
-  <audio id="music" loop>
-    <source src="Albumaty.Com_amrw_dyab_hbیbty_mlak.mp3" type="audio/mpeg">
-  </audio>
+    <div id="page2" class="page">
+        <div class="message-container">
+            <p class="text-message">
+                عايز أقولك إني بحبك وإنا هتبقى سنة جديدة تحفة وحبيت أعمل الهدية دي عشان تكوني معانا دايماً... <br>
+                تعالي نشوف ذكرياتنا مع بعض ✨
+            </p>
+            <button class="start-btn" onclick="nextPage(3)">✨ Start Journey ✨</button>
+        </div>
+    </div>
 
-  <h1>أغلى إنسانة في حياتي 💕</h1>
-  <div class="heart">❤️</div>
+    <div id="page3" class="page">
+        <div class="memories-header">✨ Our Memories ✨</div>
+        <div class="scroll-container">
+            
+            <div class="memory-card">
+                <div class="video-placeholder">🎥 فيديو أو صورة هنا</div>
+                <p>الأغنية اللي بنحبها 🎵</p>
+            </div>
 
-  <div class="video-card">
-    <div class="video-header">أجمل ذكرى ✨</div>
-    <video id="vid" controls playsinline preload="metadata">
-      <source src="Medo dalia.mp4" type="video/mp4">
-      متصفحك لا يدعم تشغيل الفيديو.
-    </video>
-  </div>
-  
-  <p style="font-size: 18px; line-height: 1.6;">"أنا وهي وزيها مين.. دي أجمل حاجة في الدنيا تشوفها العين.." 🤍</p>
-</div>
+            <div class="memory-card">
+                <div class="video-placeholder">🎥 فيديو للموج والبحر</div>
+                <p>أنت الحاجة الوحيدة اللي أنا بعشقها 🌊</p>
+            </div>
 
-<script>
-  function unlock() {
-    const p = document.getElementById('pass').value;
-    const music = document.getElementById('music');
-    const video = document.getElementById('vid');
+            <div class="memory-card">
+                <img src="https://via.placeholder.com/300x400" alt="Memory">
+                <p>يوم مقدرش أنساه 💖</p>
+            </div>
 
-    if (p === "762003") {
-      document.getElementById('lock-screen').style.opacity = '0';
-      setTimeout(() => {
-        document.getElementById('lock-screen').style.display = 'none';
-        const main = document.getElementById('main-content');
-        main.style.display = 'block';
-        setTimeout(() => { 
-          main.style.opacity = '1'; 
-          
-          // تشغيل الميديا
-          music.play().catch(e => console.log("Audio error"));
-          video.play().catch(e => console.log("Video error"));
-        }, 50);
-      }, 500);
-    } else {
-      alert("كلمة السر خطأ يا روحي! ❌");
-    }
-  }
+            <button class="restart-btn" onclick="location.reload()">✨ Restart Journey ✨</button>
+        </div>
+    </div>
 
-  document.getElementById('pass').addEventListener('keypress', (e) => { 
-    if(e.key === 'Enter') unlock(); 
-  });
-</script>
+    <script>
+        function checkPassword() {
+            const pass = document.getElementById('passwordInput').value;
+            if(pass === "1234") { // يمكنك تغيير كلمة السر هنا
+                nextPage(2);
+            } else {
+                alert("كلمة السر خطأ! جرب 1234");
+            }
+        }
 
+        function nextPage(pageNum) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + pageNum).classList.add('active');
+        }
+    </script>
 </body>
 </html>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(180deg, #e0aaff, #c77dff, #9d4edd);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.page {
+    display: none;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    padding: 20px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.active {
+    display: flex;
+}
+
+/* تصميم القفل */
+.lock-container {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 30px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    border: 2px solid white;
+}
+
+.lock-container h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #5a189a;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 20px;
+    border: none;
+    text-align: center;
+}
+
+button {
+    background: linear-gradient(90deg, #ff85a1, #ff4d6d);
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* تصميم الرسالة والمعرض */
+.message-container {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 20px;
+    line-height: 1.8;
+}
+
+.scroll-container {
+    overflow-y: auto;
+    height: 80vh;
+    margin-top: 20px;
+}
+
+.memory-card {
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.memory-card img, .video-placeholder {
+    width: 100%;
+    border-radius: 15px;
+    height: 250px;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+}
+
+.memories-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
