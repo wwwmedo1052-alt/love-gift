@@ -3,69 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أجمل هدية</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <title>عيد ميلاد سعيد</title>
+    <style>
+        :root {
+            --pink-bg: #ffc0cb;
+            --pink-dark: #ff69b4;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--pink-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #444;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        /* شاشات العرض */
+        .screen { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* شاشة كلمة المرور */
+        input[type="password"] {
+            width: 80%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 2px solid var(--pink-dark);
+            border-radius: 25px;
+            outline: none;
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--pink-dark);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover { transform: scale(1.05); }
+
+        /* معرض الصور */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid var(--pink-dark);
+        }
+
+        .timer {
+            font-size: 0.9em;
+            color: var(--pink-dark);
+            margin-top: 10px;
+        }
+
+        h2 { color: var(--pink-dark); }
+        p { line-height: 1.6; }
+
+    </style>
 </head>
 <body>
 
-    <div id="page1" class="page active">
-        <div class="lock-container">
-            <div class="lock-icon">🔓</div>
-            <h2>Enter Password</h2>
-            <p>💖 Unlock 💖</p>
-            <input type="password" id="passwordInput" placeholder="Password 🔑">
-            <button onclick="checkPassword()">🔓 Unlock</button>
-            <div class="hearts">❤️❤️❤️❤️❤️</div>
+    <div class="container">
+        <div id="screen1" class="screen active">
+            <h2>أدخل كلمة السر 💌</h2>
+            <input type="password" id="passInput" placeholder="اكتب سرنا هنا...">
+            <br>
+            <button onclick="checkPass()">Unlock 💕</button>
         </div>
-    </div>
 
-    <div id="page2" class="page">
-        <div class="message-container">
-            <p class="text-message">
-                عايز أقولك إني بحبك وإنا هتبقى سنة جديدة تحفة وحبيت أعمل الهدية دي عشان تكوني معانا دايماً... <br>
-                تعالي نشوف ذكرياتنا مع بعض ✨
+        <div id="screen2" class="screen">
+            <h2>كل سنة وأنتي طيبة يا أجمل حاجة حصلتلي 🎂</h2>
+            <p>
+                عارف إن النهاردة كنتي مستنية أكون جنبك، بس والله قلبي معاكي في كل لحظة.. 
+                دي مش سنة عادية، دي بداية جديدة ليكي وللي جاي.
             </p>
-            <button class="start-btn" onclick="nextPage(3)">✨ Start Journey ✨</button>
+            <button onclick="nextScreen(3)">التالي 💕</button>
         </div>
-    </div>
 
-    <div id="page3" class="page">
-        <div class="memories-header">✨ Our Memories ✨</div>
-        <div class="scroll-container">
-            
-            <div class="memory-card">
-                <div class="video-placeholder">🎥 فيديو أو صورة هنا</div>
-                <p>الأغنية اللي بنحبها 🎵</p>
+        <div id="screen3" class="screen">
+            <h3>ذكرياتنا 🎀</h3>
+            <div class="gallery">
+                <img src="https://via.placeholder.com/150" alt="صورة 1">
+                <img src="https://via.placeholder.com/150" alt="صورة 2">
             </div>
-
-            <div class="memory-card">
-                <div class="video-placeholder">🎥 فيديو للموج والبحر</div>
-                <p>أنت الحاجة الوحيدة اللي أنا بعشقها 🌊</p>
+            <div class="timer" id="timer">
+                لقد مر علي علاقتنا 6 سنوات...
             </div>
+            <br>
+            <button onclick="nextScreen(4)">التالي 💕</button>
+        </div>
 
-            <div class="memory-card">
-                <img src="https://via.placeholder.com/300x400" alt="Memory">
-                <p>يوم مقدرش أنساه 💖</p>
-            </div>
-
-            <button class="restart-btn" onclick="location.reload()">✨ Restart Journey ✨</button>
+        <div id="screen4" class="screen">
+            <h2>على طول 🎀</h2>
+            <p>مهما الدنيا ودتنا فين.. هنفضل إنت أغلى حد عندي.</p>
+            <p>أماني وبيتي اللي برتاح فيه.</p>
+            <button onclick="location.reload()">إعادة 🔄</button>
         </div>
     </div>
 
     <script>
-        function checkPassword() {
-            const pass = document.getElementById('passwordInput').value;
-            if(pass === "1234") { // يمكنك تغيير كلمة السر هنا
-                nextPage(2);
+        function checkPass() {
+            const pass = document.getElementById('passInput').value;
+            // يمكنك تغيير كلمة السر هنا
+            if(pass === "762003") {
+                nextScreen(2);
             } else {
-                alert("كلمة السر خطأ! جرب 1234");
+                alert("كلمة السر خاطئة يا جميل!");
             }
         }
 
-        function nextPage(pageNum) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page' + pageNum).classList.add('active');
+        function nextScreen(screenNum) {
+            // إخفاء جميع الشاشات
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            // إظهار الشاشة المطلوبة
+            document.getElementById('screen' + screenNum).classList.add('active');
         }
     </script>
 </body>
