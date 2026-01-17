@@ -101,6 +101,9 @@
     </div>
 
     <script>
+        const audio = document.getElementById('audioTrack');
+        const startPoint = new Date("January 18, 2025 00:00:00").getTime();
+
         // مصفوفة الذكريات
         let memories = [
             {
@@ -133,9 +136,6 @@
             }
         ];
 
-        const audio = document.getElementById('audioTrack');
-        const startPoint = new Date("January 18, 2025 00:00:00").getTime();
-
         function handleKeyPress(event) {
             if (event.key === "Enter") {
                 unlock();
@@ -147,7 +147,11 @@
             const code = inputField.value.trim();
             
             if(code === "20/1" || code === "٢٠/١") {
-                audio.play().catch(e => console.log("Audio blocked"));
+                // تشغيل الأغنية فور الضغط على الزر بنجاح
+                audio.play().then(() => {
+                    document.getElementById('playIcon').innerText = "⏸";
+                }).catch(e => console.log("Audio play blocked by browser"));
+
                 document.getElementById('lock-screen').style.transform = "translateY(-100%)";
                 setTimeout(() => {
                     document.getElementById('lock-screen').style.display = 'none';
@@ -162,8 +166,13 @@
         }
 
         function togglePlay() {
-            if(audio.paused) { audio.play(); document.getElementById('playIcon').innerText = "⏸"; }
-            else { audio.pause(); document.getElementById('playIcon').innerText = "▶"; }
+            if(audio.paused) { 
+                audio.play(); 
+                document.getElementById('playIcon').innerText = "⏸"; 
+            } else { 
+                audio.pause(); 
+                document.getElementById('playIcon').innerText = "▶"; 
+            }
         }
 
         function isVideo(url) {
