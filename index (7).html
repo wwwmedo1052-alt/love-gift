@@ -44,8 +44,9 @@
             overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .image-frame img { width: 100%; height: auto; display: block; }
-        .video-frame video { width: 100%; display: block; max-height: 600px; }
+        /* تنسيق الوسائط المتعددة */
+        .media-stack { display: flex; flex-direction: column; gap: 2px; background: #000; }
+        .media-stack img, .media-stack video { width: 100%; display: block; max-height: 70vh; object-fit: contain; }
 
         .memory-body { padding: 20px; }
         .date-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 10px; font-size: 12px; font-weight: bold; }
@@ -56,16 +57,10 @@
         }
         .play-btn { background: white; color: var(--primary); width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 
-        .admin-section { background: rgba(0,0,0,0.8); padding: 20px; border-radius: 25px; margin-bottom: 30px; border: 1px dashed var(--primary); }
-        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none; }
-        .btn-add { width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        
         .header-card { background: var(--glass); padding: 25px; border-radius: 25px; text-align: center; margin-bottom: 20px; }
         .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
         .timer-box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 15px; border: 1px solid var(--primary); }
         .timer-box span { display: block; font-size: 18px; font-weight: bold; }
-        
-        .export-btn { background: #4CAF50; }
     </style>
 </head>
 <body>
@@ -75,8 +70,8 @@
             <span style="font-size: 50px;">🔐</span>
             <h2>Hassan & Hana</h2>
             <p>أدخل تاريخ يوم حبنا (يوم/شهر)</p>
-            <input type="text" id="pinCode" placeholder="مثال: 20/1" style="text-align: center;">
-            <button class="btn-add" onclick="unlock()">دخول</button>
+            <input type="text" id="pinCode" placeholder="مثال: 20/1" style="text-align: center; width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;">
+            <button onclick="unlock()" style="width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;">دخول</button>
         </div>
     </div>
 
@@ -101,23 +96,30 @@
             </audio>
         </div>
 
-        <div class="admin-section" id="adminArea">
-            <h3 style="margin-top:0">إضافة ذكرى جديدة ✨</h3>
-            <input type="text" id="mTitle" placeholder="العنوان">
-            <input type="text" id="mLink" placeholder="رابط الصورة أو الفيديو">
-            <input type="date" id="mDate">
-            <textarea id="mDesc" placeholder="التفاصيل.."></textarea>
-            <button class="btn-add" onclick="addNewMemory()">إضافة</button>
-            <button class="btn-add export-btn" onclick="exportCode()">نسخ الكود النهائي للإرسال 🚀</button>
-        </div>
-
         <div id="feed"></div>
     </div>
 
     <script>
-        // مصفوفة الذكريات
+        /* --- تعديل البيانات من هنا ---
+           يمكنك إضافة ذكرى جديدة بنسخ الكائن {} وزيادة الروابط داخل الـ links
+        */
         let memories = [
-            { id: 1, title: "بداية حكايتنا", link: "https://a.top4top.io/p_3669f1b2n1.jpg", date: "2025-01-20", desc: "أجمل يوم في حياتي" }
+            {
+                id: 2,
+                title: "اجمل لحظه",
+                date: "2026-01-17",
+                desc: "هنا كنت مكسوف وانتي كنتي قمر..",
+                links: [
+                    "https://k.top4top.io/m_36697ebvg0.mp4" // مثال لرابط فيديو
+                ]
+            },
+            {
+                id: 1,
+                title: "بداية حكايتنا",
+                date: "2025-01-20",
+                desc: "أجمل يوم في حياتي",
+                links: ["https://i.ibb.co/qYZb6KZS/image.jpg"]
+            }
         ];
 
         const audio = document.getElementById('audioTrack');
@@ -125,12 +127,8 @@
 
         function unlock() {
             const code = document.getElementById('pinCode').value.trim();
-            // تأكد أن الكود يطابق تماماً "20/1"
             if(code === "20/1") {
-                // محاولة تشغيل الصوت
                 audio.play().catch(e => console.log("Audio play blocked"));
-                
-                // حركة الاختفاء
                 document.getElementById('lock-screen').style.transform = "translateY(-100%)";
                 setTimeout(() => {
                     document.getElementById('lock-screen').style.display = 'none';
@@ -152,28 +150,18 @@
             return url.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/) != null;
         }
 
-        function addNewMemory() {
-            const title = document.getElementById('mTitle').value;
-            const link = document.getElementById('mLink').value;
-            const date = document.getElementById('mDate').value;
-            const desc = document.getElementById('mDesc').value;
-
-            if(!title || !link || !date) return alert("من فضلك ادخل البيانات");
-
-            memories.unshift({ id: Date.now(), title, link, date, desc });
-            renderMemories();
-        }
-
         function renderMemories() {
             const feed = document.getElementById('feed');
             feed.innerHTML = memories.map(m => {
-                const mediaContent = isVideo(m.link) 
-                    ? `<div class="video-frame"><video src="${m.link}" controls playsinline></video></div>` 
-                    : `<div class="image-frame"><img src="${m.link}"></div>`;
+                const mediaHtml = m.links.map(link => {
+                    return isVideo(link) 
+                        ? `<video src="${link}" controls playsinline></video>` 
+                        : `<img src="${link}">`;
+                }).join('');
 
                 return `
                 <div class="memory-card">
-                    ${mediaContent}
+                    <div class="media-stack">${mediaHtml}</div>
                     <div class="memory-body">
                         <span class="date-badge">${m.date}</span>
                         <h3 style="margin:15px 0 10px 0">${m.title}</h3>
@@ -191,24 +179,6 @@
                 document.getElementById('m').innerText = Math.floor((diff % 3600000) / 60000);
                 document.getElementById('s').innerText = Math.floor((diff % 60000) / 1000);
             }, 1000);
-        }
-
-        function exportCode() {
-            const adminArea = document.getElementById('adminArea');
-            adminArea.style.display = 'none';
-            let currentFullCode = document.documentElement.outerHTML;
-            const memoriesData = `let memories = ${JSON.stringify(memories)};`;
-            const finalCode = currentFullCode.replace(/let memories = \[[\s\S]*?\];/, memoriesData);
-            
-            const tempInput = document.createElement("textarea");
-            tempInput.value = "<!DOCTYPE html>\n" + finalCode;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-            
-            adminArea.style.display = 'block';
-            alert("تم نسخ الكود بنجاح! الصقه في ملف جديد وأرسله.");
         }
     </script>
 </body>
