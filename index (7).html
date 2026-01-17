@@ -69,7 +69,9 @@
             <span style="font-size: 50px;">🔐</span>
             <h2>Hassan & Hana</h2>
             <p>أدخل تاريخ يوم حبنا (يوم/شهر)</p>
-            <input type="text" id="pinCode" placeholder="افتكري" style="text-align: center; width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;">
+            <input type="text" id="pinCode" placeholder="افتكري (مثال: 20/1)" 
+                   style="text-align: center; width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;"
+                   onkeypress="handleKeyPress(event)">
             <button onclick="unlock()" style="width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;">دخول</button>
         </div>
     </div>
@@ -99,12 +101,13 @@
     </div>
 
     <script>
+        // مصفوفة الذكريات الخاصة بك
         let memories = [
             {
                 id: 4,
                 title: " احلي ايام ",
                 date: "2025-01-18",
-                desc: "گنت عاوزة اقولك بمناسبة أننا كملنا سنة مع بعض ويارب العمر كلو كل سنة وأنتى منوره حياتي ودنيتي وكل سنة وأنتى حبيبتي سنة عدت معاكى بحلوها ومرها وسنة هبتديها بيكى ويارب طول العمر وإنشاء الله مش اخر سنة لينا مع بعض وهنفضل مكملين لو الدنيا كلها وقعت أنا وأنتى هنفضل مكملين مع بعض وماسكين في أيد بعض حبيتك وحبيت ضحكتك اللي منورة حياتي ودنيتي بحبك وهفضل احبك العمر كلو لحد ما يجي الوقت اللي يبقي في الحب دا قدام الناس كلها أنتى هدية من ربنا بعتهالي هفضل محافظة عليها عمري كلو ومش هخلي حد يخدك مني وأنتى اللي عرفت معاها معني الحب ومعني الاهتمام ومعني الثقة وكل حاجة بجد أنتى بنتى واختى وصحبتى وحبيبتي ودنيتي واهلي وناسي وسندي وضهري ونور عيني من جوا كل سنة وأحنا بينا خناقات كتير ونكد كتير عاوزة أقولك أنك احسن وحده انا عرفتها ومتأكد أنك بتحبني ولازم تبقي عارف أنا بحبك قد أي أنا نفسي أشوفك احسن واحد في الدنيا كلها أنا بتباها بيكى بحبك وبحب رخامتك وبحب نكدك عليا والمقالب اللي بتعمليها فيا كتير بس في الاخر ماليش حد غيرك يابت هنفضل مع بعض العمر كلو وهنفضل قد وعدنا لبعض وأنا وعد مني هفضل علي قلبك ومربع كمان عايز أقولك أنا بحبك اووي فوق ما تتخيلى وهفضل احبك لحد ما اموت معرفتش الحب غير وانا معاك معرفتش يعني اي أخاف على حد ويبقي جزء من حياتي ونصي الثاني غير وأنا جمبك اتمنيت من ربنا بت أحبها ويتشيلني في عينيها وربنا استجاب مني وبعتك ليااا هفضل علي قد وعدي معاكى لأنك أمنية اتمنيتها والحمد لله لقيتك ف معنديش استعداد اخسرك ربنا يخليك ليا وميحرمنيش منك يارب ويجعلك من نصيبي ويجمعنا في بيت واحد يا كتكوتيي♥️♥️♥️♥️♥️♥️♥️😍",
+                desc: "گنت عاوزة اقولك بمناسبة أننا كملنا سنة مع بعض ويارب العمر كلو كل سنة وأنتى منوره حياتي ودنيتي وكل سنة وأنتى حبيبتي سنة عدت معاكى بحلوها ومرها وسنة هبتديها بيكى ويارب طول العمر وإنشاء الله مش اخر سنة لينا مع بعض وهنفضل مكملين لو الدنيا كلها وقعت أنا وأنتى هنفضل مكملين مع بعض وماسكين في أيد بعض حبيتك وحبيت ضحكتك اللي منورة حياتي ودنيتي بحبك وهفضل احبك العمر كلو لحد ما يجي الوقت اللي يبقي في الحب دا قدام الناس كلها أنتى هدية من ربنا بعتهالي هفضل محافظة عليها عمري كلو ومش هخلي حد يخدك مني وأنتى اللي عرفت معاها معني الحب ومعني الاهتمام ومعني الثقة وكل حاجة بجد أنتى بنتى واختى وصحبتى وحبيبتي ودنيتي واهلي وناسي وسندي وضهري نورة عيني من جوا كل سنة وأحنا بينا خناقات كتير ونكد كتير عاوزة أقولك أنك احسن وحده انا عرفتها ومتأكد أنك بتحبني ولازم تبقي عارف أنا بحبك قد أي أنا نفسي أشوفك احسن واحد في الدنيا كلها أنا بتباها بيكى بحبك وبحب رخامتك وبحب نكدك عليا والمقالب اللي بتعمليها فيا كتير بس في الاخر ماليش حد غيرك يابت هنفضل مع بعض العمر كلو وهنفضل قد وعدنا لبعض وأنا وعد مني هفضل علي قلبك ومربع كمان عايز أقولك أنا بحبك اووي فوق ما تتخيلى وهفضل احبك لحد ما اموت معرفتش الحب غير وانا معاك معرفتش يعني اي أخاف على حد ويبقي جزء من حياتي ونصي الثاني غير وأنا جمبك اتمنيت من ربنا بت أحبها ويتشيلني في عينيها وربنا استجاب مني وبعتك ليااا هفضل علي قد وعدي معاكى لأنك أمنية اتمنيتها والحمد لله لقيتك ف معنديش استعداد اخسرك ربنا يخليك ليا وميحرمنيش منك يارب ويجعلك من نصيبي ويجمعنا في بيت واحد يا كتكوتيي♥️♥️♥️♥️♥️♥️♥️😍",
                 links: ["https://l.top4top.io/m_3669d3gml0.mp4"]
             },
             {
@@ -133,9 +136,18 @@
         const audio = document.getElementById('audioTrack');
         const startPoint = new Date("January 18, 2025 00:00:00").getTime();
 
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                unlock();
+            }
+        }
+
         function unlock() {
-            const code = document.getElementById('pinCode').value.trim();
-            if(code === "20/1") {
+            const inputField = document.getElementById('pinCode');
+            const code = inputField.value.trim(); // حذف المسافات من البداية والنهاية
+            
+            // التحقق من الكود (يتعامل مع الأرقام الإنجليزية والعربية)
+            if(code === "20/1" || code === "٢٠/١") {
                 audio.play().catch(e => console.log("Audio play blocked"));
                 document.getElementById('lock-screen').style.transform = "translateY(-100%)";
                 setTimeout(() => {
@@ -145,7 +157,8 @@
                     renderMemories();
                 }, 800);
             } else { 
-                alert("التاريخ خطأ! حاول مرة أخرى"); 
+                alert("التاريخ خطأ! جربي مرة ثانية يا ست البنات");
+                inputField.value = ""; // مسح الخانة للمحاولة مرة أخرى
             }
         }
 
@@ -163,8 +176,8 @@
             feed.innerHTML = memories.map(m => {
                 const mediaHtml = m.links.map(link => {
                     return isVideo(link) 
-                        ? `<video src="${link}" controls playsinline></video>` 
-                        : `<img src="${link}">`;
+                        ? `<video src="${link}" controls playsinline preload="metadata"></video>` 
+                        : `<img src="${link}" loading="lazy">`;
                 }).join('');
 
                 return `
@@ -180,13 +193,15 @@
         }
 
         function startTimer() {
-            setInterval(() => {
+            function update() {
                 const diff = new Date().getTime() - startPoint;
                 document.getElementById('d').innerText = Math.floor(diff / 86400000);
                 document.getElementById('h').innerText = Math.floor((diff % 86400000) / 3600000);
                 document.getElementById('m').innerText = Math.floor((diff % 3600000) / 60000);
                 document.getElementById('s').innerText = Math.floor((diff % 60000) / 1000);
-            }, 1000);
+            }
+            update();
+            setInterval(update, 1000);
         }
     </script>
 </body>
