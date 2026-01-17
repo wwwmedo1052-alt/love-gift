@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -93,7 +92,7 @@
             animation: slideUp 0.5s ease forwards;
         }
 
-rd img { width: 100%; height: 280px; object-fit: cover; }
+        .memory-card img { width: 100%; height: 280px; object-fit: cover; }
         .memory-body { padding: 20px; }
         .date-badge { background: white; color: black; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; }
         
@@ -113,7 +112,7 @@ rd img { width: 100%; height: 280px; object-fit: cover; }
             <span style="font-size: 60px;">🔐</span>
             <h2>Mido & Dina</h2>
             <p style="font-size: 14px; opacity: 0.8;">أدخل كلمة السر للمتابعة</p>
-            <input type="password" id="pinCode" placeholder="2025" style="text-align: center;">
+            <input type="password" id="pinCode" placeholder="أدخل كلمة السر (2025)" style="text-align: center;">
             <button class="btn-add" style="margin-top:15px" onclick="unlock()">دخول</button>
         </div>
     </div>
@@ -154,15 +153,14 @@ rd img { width: 100%; height: 280px; object-fit: cover; }
 
     <script>
         const audio = document.getElementById('audioTrack');
-        // استعادة الذكريات من ذاكرة المتصفح
         let memories = JSON.parse(localStorage.getItem('myMemories')) || [];
 
         window.onload = () => { renderMemories(); };
 
         function unlock() {
             if(document.getElementById('pinCode').value === "2025") {
-                // تشغيل الأغنية فوراً عند الضغط
-                audio.play().catch(() => console.log("تفاعل مطلوب"));
+                // تشغيل الصوت فوراً عند التفاعل
+                audio.play().catch(e => console.log("Audio play failed: ", e));
                 
                 document.getElementById('lock-screen').style.transform = "translateY(-100%)";
                 setTimeout(() => {
@@ -184,15 +182,12 @@ rd img { width: 100%; height: 280px; object-fit: cover; }
             const date = document.getElementById('mDate').value;
             const desc = document.getElementById('mDesc').value;
 
-            if
-
-(!title || !date) return alert("من فضلك أدخل العنوان والتاريخ");
+            if(!title || !date) return alert("من فضلك أدخل العنوان والتاريخ");
 
             const newMemory = { id: Date.now(), title, img, date, desc };
             memories.unshift(newMemory);
             saveData();
             
-            // إعادة تصفير الحقول
             document.getElementById('mTitle').value = '';
             document.getElementById('mDesc').value = '';
         }
@@ -224,7 +219,6 @@ rd img { width: 100%; height: 280px; object-fit: cover; }
             `).join('');
         }
 
-        // عداد الوقت (منذ 1 يناير 2024 - يمكنك تغييره)
         const startPoint = new Date("January 1, 2024 00:00:00").getTime();
         function startTimer() {
             setInterval(() => {
