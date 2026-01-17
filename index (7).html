@@ -68,8 +68,8 @@
         <div class="lock-card">
             <span style="font-size: 50px;">🔐</span>
             <h2>Hassan & Hana</h2>
-            <p> تاريخ يوم حبنا </p>
-            <input type="text" id="pinCode" placeholder="افتكري (مثال: 20/1)" 
+            <p>تاريخ يوم حبنا</p>
+            <input type="text" id="pinCode" placeholder="افتكري يا ست البنات.." 
                    style="text-align: center; width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;"
                    onkeypress="handleKeyPress(event)">
             <button onclick="unlock()" style="width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;">دخول</button>
@@ -101,7 +101,7 @@
     </div>
 
     <script>
-        // مصفوفة الذكريات الخاصة بك
+        // مصفوفة الذكريات
         let memories = [
             {
                 id: 4,
@@ -129,7 +129,9 @@
                 title: "بداية حكايتنا",
                 date: "2025-01-18",
                 desc: "أجمل يوم في حياتي",
-                links: ["https://c.top4top.io/p_36694wtj20.jpg ];
+                links: ["https://c.top4top.io/p_36694wtj20.jpg"]
+            }
+        ];
 
         const audio = document.getElementById('audioTrack');
         const startPoint = new Date("January 18, 2025 00:00:00").getTime();
@@ -142,11 +144,10 @@
 
         function unlock() {
             const inputField = document.getElementById('pinCode');
-            const code = inputField.value.trim(); // حذف المسافات من البداية والنهاية
+            const code = inputField.value.trim();
             
-            // التحقق من الكود (يتعامل مع الأرقام الإنجليزية والعربية)
             if(code === "20/1" || code === "٢٠/١") {
-                audio.play().catch(e => console.log("Audio play blocked"));
+                audio.play().catch(e => console.log("Audio blocked"));
                 document.getElementById('lock-screen').style.transform = "translateY(-100%)";
                 setTimeout(() => {
                     document.getElementById('lock-screen').style.display = 'none';
@@ -155,8 +156,8 @@
                     renderMemories();
                 }, 800);
             } else { 
-                alert("التاريخ خطأ! جربي مرة ثانية يا ست البنات");
-                inputField.value = ""; // مسح الخانة للمحاولة مرة أخرى
+                alert("التاريخ خطأ! جربي مرة ثانية");
+                inputField.value = "";
             }
         }
 
