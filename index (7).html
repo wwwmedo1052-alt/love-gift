@@ -69,7 +69,7 @@
             <span style="font-size: 50px;">🔐</span>
             <h2>Hassan & Hana</h2>
             <p>أدخل تاريخ يوم حبنا (يوم/شهر)</p>
-            <input type="text" id="pinCode" placeholder="مثال: 20/1" style="text-align: center; width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;">
+            <input type="text" id="pinCode" placeholder="افتكري" style="text-align: center; width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;">
             <button onclick="unlock()" style="width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;">دخول</button>
         </div>
     </div>
@@ -135,7 +135,7 @@
 
         function unlock() {
             const code = document.getElementById('pinCode').value.trim();
-            if(code === "افتكري") {
+            if(code === "20/1") {
                 audio.play().catch(e => console.log("Audio play blocked"));
                 document.getElementById('lock-screen').style.transform = "translateY(-100%)";
                 setTimeout(() => {
