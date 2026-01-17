@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hassan & Hana</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff0050;
+            --glass: rgba(0, 0, 0, 0.7);
+            --border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            margin: 0;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://i.ibb.co/qYZb6KZS/image.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: white; overflow-x: hidden;
+        }
+
+        #lock-screen {
+            position: fixed; inset: 0; 
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                        url('https://i.ibb.co/qYZb6KZS/image.jpg');
+            background-size: cover; z-index: 10000; display: flex; justify-content: center; align-items: center;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .lock-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 35px; text-align: center; width: 85%; max-width: 380px;
+            border: 1px solid var(--border-color);
+        }
+
+        #main-app { display: none; max-width: 600px; margin: 0 auto; padding: 20px; }
+
+        .memory-card {
+            background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px; margin-bottom: 30px; border: 1px solid var(--border-color);
+            overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .image-frame img { width: 100%; height: auto; display: block; }
+        .video-frame video { width: 100%; display: block; max-height: 600px; }
+
+        .memory-body { padding: 20px; }
+        .date-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+        
+        .music-bar {
+            background: linear-gradient(90deg, #ff0050 0%, #ff5e62 100%);
+            padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; cursor: pointer;
+        }
+        .play-btn { background: white; color: var(--primary); width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+
+        .admin-section { background: rgba(0,0,0,0.8); padding: 20px; border-radius: 25px; margin-bottom: 30px; border: 1px dashed var(--primary); }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none; }
+        .btn-add { width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        .header-card { background: var(--glass); padding: 25px; border-radius: 25px; text-align: center; margin-bottom: 20px; }
+        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .timer-box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 15px; border: 1px solid var(--primary); }
+        .timer-box span { display: block; font-size: 18px; font-weight: bold; }
+        
+        .export-btn { background: #4CAF50; }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="lock-card">
+            <span style="font-size: 50px;">🔐</span>
+            <h2>Hassan & Hana</h2>
+            <p>أدخل تاريخ يوم حبنا (يوم/شهر)</p>
+            <input type="text" id="pinCode" placeholder="مثال: 20/1" style="text-align: center;">
+            <button class="btn-add" onclick="unlock()">دخول</button>
+        </div>
+    </div>
+
+    <div id="main-app">
+        <div class="header-card">
+            <h1 style="margin:0">❤️ Hassan & Hana</h1>
+            <div class="timer-grid">
+                <div class="timer-box"><span id="d">0</span><label>يوم</label></div>
+                <div class="timer-box"><span id="h">0</span><label>ساعة</label></div>
+                <div class="timer-box"><span id="m">0</span><label>دقيقة</label></div>
+                <div class="timer-box"><span id="s">0</span><label>ثانية</label></div>
+            </div>
+        </div>
+
+        <div class="music-bar" onclick="togglePlay()">
+            <button class="play-btn" id="playIcon">▶</button>
+            <div style="flex-grow:1">
+                <div style="font-weight: bold; font-size: 14px;">أغنيتنا المفضلة 🎵</div>
+            </div>
+            <audio id="audioTrack" loop>
+                <source src="https://d.top4top.io/m_3669tyjet1.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <div class="admin-section" id="adminArea">
+            <h3 style="margin-top:0">إضافة ذكرى جديدة ✨</h3>
+            <input type="text" id="mTitle" placeholder="العنوان">
+            <input type="text" id="mLink" placeholder="رابط الصورة أو الفيديو">
+            <input type="date" id="mDate">
+            <textarea id="mDesc" placeholder="التفاصيل.."></textarea>
+            <button class="btn-add" onclick="addNewMemory()">إضافة</button>
+            <button class="btn-add export-btn" onclick="exportCode()">نسخ الكود النهائي للإرسال 🚀</button>
+        </div>
+
+        <div id="feed"></div>
+    </div>
+
+    <script>
+        // مصفوفة الذكريات
+        let memories = [
+            { id: 1, title: "بداية حكايتنا", link: "https://a.top4top.io/p_3669f1b2n1.jpg", date: "2025-01-20", desc: "أجمل يوم في حياتي" }
+        ];
+
+        const audio = document.getElementById('audioTrack');
+        const startPoint = new Date("January 18, 2025 00:00:00").getTime();
+
+        function unlock() {
+            const code = document.getElementById('pinCode').value.trim();
+            // تأكد أن الكود يطابق تماماً "20/1"
+            if(code === "20/1") {
+                // محاولة تشغيل الصوت
+                audio.play().catch(e => console.log("Audio play blocked"));
+                
+                // حركة الاختفاء
+                document.getElementById('lock-screen').style.transform = "translateY(-100%)";
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    startTimer();
+                    renderMemories();
+                }, 800);
+            } else { 
+                alert("التاريخ خطأ! حاول مرة أخرى"); 
+            }
+        }
+
+        function togglePlay() {
+            if(audio.paused) { audio.play(); document.getElementById('playIcon').innerText = "⏸"; }
+            else { audio.pause(); document.getElementById('playIcon').innerText = "▶"; }
+        }
+
+        function isVideo(url) {
+            return url.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/) != null;
+        }
+
+        function addNewMemory() {
+            const title = document.getElementById('mTitle').value;
+            const link = document.getElementById('mLink').value;
+            const date = document.getElementById('mDate').value;
+            const desc = document.getElementById('mDesc').value;
+
+            if(!title || !link || !date) return alert("من فضلك ادخل البيانات");
+
+            memories.unshift({ id: Date.now(), title, link, date, desc });
+            renderMemories();
+        }
+
+        function renderMemories() {
+            const feed = document.getElementById('feed');
+            feed.innerHTML = memories.map(m => {
+                const mediaContent = isVideo(m.link) 
+                    ? `<div class="video-frame"><video src="${m.link}" controls playsinline></video></div>` 
+                    : `<div class="image-frame"><img src="${m.link}"></div>`;
+
+                return `
+                <div class="memory-card">
+                    ${mediaContent}
+                    <div class="memory-body">
+                        <span class="date-badge">${m.date}</span>
+                        <h3 style="margin:15px 0 10px 0">${m.title}</h3>
+                        <p style="margin:0; opacity:0.8; line-height:1.6">${m.desc}</p>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function startTimer() {
+            setInterval(() => {
+                const diff = new Date().getTime() - startPoint;
+                document.getElementById('d').innerText = Math.floor(diff / 86400000);
+                document.getElementById('h').innerText = Math.floor((diff % 86400000) / 3600000);
+                document.getElementById('m').innerText = Math.floor((diff % 3600000) / 60000);
+                document.getElementById('s').innerText = Math.floor((diff % 60000) / 1000);
+            }, 1000);
+        }
+
+        function exportCode() {
+            const adminArea = document.getElementById('adminArea');
+            adminArea.style.display = 'none';
+            let currentFullCode = document.documentElement.outerHTML;
+            const memoriesData = `let memories = ${JSON.stringify(memories)};`;
+            const finalCode = currentFullCode.replace(/let memories = \[[\s\S]*?\];/, memoriesData);
+            
+            const tempInput = document.createElement("textarea");
+            tempInput.value = "<!DOCTYPE html>\n" + finalCode;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            adminArea.style.display = 'block';
+            alert("تم نسخ الكود بنجاح! الصقه في ملف جديد وأرسله.");
+        }
+    </script>
+</body>
+</html>
