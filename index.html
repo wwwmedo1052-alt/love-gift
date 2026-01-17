@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -17,16 +16,15 @@
         
         body {
             margin: 0;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
                         url('https://i.ibb.co/qYZb6KZS/image.jpg');
             background-size: cover; background-position: center; background-attachment: fixed;
             color: white; overflow-x: hidden;
         }
 
-        /* شاشة القفل */
         #lock-screen {
             position: fixed; inset: 0; 
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
                         url('https://i.ibb.co/qYZb6KZS/image.jpg');
             background-size: cover; z-index: 10000; display: flex; justify-content: center; align-items: center;
             transition: transform 0.8s ease-in-out;
@@ -40,51 +38,48 @@
 
         #main-app { display: none; max-width: 600px; margin: 0 auto; padding: 20px; }
 
-        /* إطار كروت الذكريات */
         .memory-card {
             background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-radius: 30px; margin-bottom: 30px; border: 1px solid var(--border-color);
             overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .image-frame { width: 100%; height: auto; min-height: 300px; padding: 10px; }
-        .image-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; border: 2px solid var(--border-color); }
-
-        .video-frame { width: 100%; background: #000; border-bottom: 2px solid var(--primary); }
-        .video-frame video { width: 100%; display: block; max-height: 600px; outline: none; }
+        .image-frame img { width: 100%; height: auto; display: block; }
+        .video-frame video { width: 100%; display: block; max-height: 600px; }
 
         .memory-body { padding: 20px; }
         .date-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 10px; font-size: 12px; font-weight: bold; }
         
-        /* مشغل الموسيقى */
         .music-bar {
             background: linear-gradient(90deg, #ff0050 0%, #ff5e62 100%);
-            padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px;
+            padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; cursor: pointer;
         }
-        .play-btn { background: white; color: var(--primary); width: 45px; height: 45px; border-radius: 50%; border: none; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .play-btn { background: white; color: var(--primary); width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 
-        .admin-section { background: rgba(0,0,0,0.75); padding: 25px; border-radius: 30px; margin-bottom: 30px; border: 1px dashed var(--primary); }
-        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none; font-size: 16px; }
-        .btn-add { width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; }
+        .admin-section { background: rgba(0,0,0,0.8); padding: 20px; border-radius: 25px; margin-bottom: 30px; border: 1px dashed var(--primary); }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none; }
+        .btn-add { width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
-        .delete-btn { position: absolute; top: 15px; left: 15px; background: rgba(255,0,0,0.7); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; z-index: 10; font-size: 20px; }
+        .delete-btn { position: absolute; top: 15px; left: 15px; background: rgba(255,0,0,0.7); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; z-index: 10; }
 
         .header-card { background: var(--glass); padding: 25px; border-radius: 25px; text-align: center; margin-bottom: 20px; }
-        .timer-grid { display: grid; grid-template-columns:
-
-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
-        .timer-box { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 15px; border: 1px solid var(--primary); }
-        .timer-box span { display: block; font-size: 20px; font-weight: bold; }
+        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .timer-box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 15px; border: 1px solid var(--primary); }
+        .timer-box span { display: block; font-size: 18px; font-weight: bold; }
+        
+        /* زر خاص لك لاستخراج الكود */
+        .export-btn { background: #4CAF50; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div id="lock-screen">
         <div class="lock-card">
-            <span style="font-size: 60px;">🔐</span>
+            <span style="font-size: 50px;">🔐</span>
             <h2>Hassan & Hana</h2>
-            <input type="text" id="pinCode" placeholder="يوم حبنا" style="text-align: center;">
-            <button class="btn-add" style="margin-top:15px" onclick="unlock()">دخول</button>
+            <p>أدخل تاريخ البداية (يوم/شهر)</p>
+            <input type="text" id="pinCode" placeholder="مثال: 20/1" style="text-align: center;">
+            <button class="btn-add" onclick="unlock()">فتح الذكريات</button>
         </div>
     </div>
 
@@ -100,43 +95,52 @@ columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
         </div>
 
         <div class="music-bar" onclick="togglePlay()">
-            <button class="play-btn" id="playIcon">⏸</button>
+            <button class="play-btn" id="playIcon">▶</button>
             <div style="flex-grow:1">
-                <div style="font-weight: bold;">الاغنيه اللي بنحبها</div>
+                <div style="font-weight: bold; font-size: 14px;">أغنيتنا المفضلة 🎵</div>
             </div>
             <audio id="audioTrack" loop>
                 <source src="https://d.top4top.io/m_3669tyjet1.mp3" type="audio/mpeg">
             </audio>
         </div>
 
-        <div class="admin-section">
+        <div class="admin-section" id="adminArea">
             <h3 style="margin-top:0">إضافة ذكرى جديدة ✨</h3>
-            <input type="text" id="mTitle" placeholder="العنوان..">
-            <input type="text" id="mLink" placeholder="رابط فيديو أو صورة مباشر..">
+            <input type="text" id="mTitle" placeholder="العنوان (مثال: أول خروجة)">
+            <input type="text" id="mLink" placeholder="رابط الصورة أو الفيديو المباشر">
             <input type="date" id="mDate">
-            <textarea id="mDesc" placeholder="اكتب تفاصيل الذكرى.."></textarea>
-            <button class="btn-add" onclick="addNewMemory()">حفظ في السجل</button>
+            <textarea id="mDesc" placeholder="اكتب تفاصيل لذيذة عن اليوم ده.."></textarea>
+            <button class="btn-add" onclick="addNewMemory()">إضافة للقمية</button>
+            <button class="btn-add export-btn" onclick="exportCode()">نسخ الكود النهائي للإرسال 🚀</button>
+            <p style="font-size: 11px; color: #aaa; margin-top: 10px;">* بعد إضافة كل صورك، اضغط على الزر الأخضر وخذ الكود الجديد وارفعه كملف HTML.</p>
         </div>
 
         <div id="feed"></div>
     </div>
 
     <script>
-        const audio = document.getElementById('audioTrack');
-        let memories = JSON.parse(localStorage.getItem('myMemories')) || [];
+        // --- البيانات الأساسية ---
+        // ضع ذكرياتك هنا يدوياً أو استخدم لوحة التحكم بالأسفل
+        let memories = [
+            { id: 1, title: "بداية حكايتنا", link: "https://i.ibb.co/qYZb6KZS/image.jpg", date: "2025-01-20", desc: "اليوم اللي غير حياتي كلها" }
+        ];
 
-        window.onload = () => { renderMemories(); };
+        const audio = document.getElementById('audioTrack');
+        const startPoint = new Date("January 18, 2025 00:00:00").getTime();
+
+        window.onload = () => {
+            renderMemories();
+        };
 
         function unlock() {
             if(document.getElementById('pinCode').value === "20/1") {
-                audio.play().catch(() => {});
                 document.getElementById('lock-screen').style.transform = "translateY(-100%)";
                 setTimeout(() => {
                     document.getElementById('lock-screen').style.display = 'none';
                     document.getElementById('main-app').style.display = 'block';
                     startTimer();
                 }, 800);
-            } else { alert("خطأ في الباسورد!"); }
+            } else { alert("التاريخ غلط يا بطل!"); }
         }
 
         function togglePlay() {
@@ -154,29 +158,23 @@ columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
             const date = document.getElementById('mDate').value;
             const desc = document.getElementById('mDesc').value;
 
-            if(!title  !link  !date) return alert("من فضلك أكمل جميع البيانات");
+            if(!title || !link || !date) return alert("املأ البيانات الأساسية");
 
             memories.unshift({ id: Date.now(), title, link, date, desc });
-            saveData();
+            renderMemories();
+            
+            // مسح الحقول
             document.getElementById('mTitle').value = '';
             document.getElementById('mLink').value = '';
             document.getElementById('mDesc').value = '';
         }
 
-        function saveData() {
-            localStorage.setItem('myMemories', JSON.stringify(memories));
-            renderMemories();
-        }
-
         function renderMemories() {
-            const feed =
-
-document.getElementById('feed');
+            const feed = document.getElementById('feed');
             feed.innerHTML = memories.map(m => {
-                // إضافة playsinline لضمان العمل على آيفون
                 const mediaContent = isVideo(m.link) 
-                    ? <div class="video-frame"><video src="${m.link}" controls playsinline preload="metadata" onplay="audio.pause(); document.getElementById('playIcon').innerText = '▶';"></video></div> 
-                    : <div class="image-frame"><img src="${m.link}"></div>;
+                    ? `<div class="video-frame"><video src="${m.link}" controls playsinline preload="metadata"></video></div>` 
+                    : `<div class="image-frame"><img src="${m.link}"></div>`;
 
                 return `
                 <div class="memory-card">
@@ -192,13 +190,10 @@ document.getElementById('feed');
         }
 
         function deleteMemory(id) {
-            if(confirm("هل أنت متأكد من حذف هذه الذكرى؟")) {
-                memories = memories.filter(m => m.id !== id);
-                saveData();
-            }
+            memories = memories.filter(m => m.id !== id);
+            renderMemories();
         }
 
-        const startPoint = new Date("January 18, 2025 00:00:00").getTime();
         function startTimer() {
             setInterval(() => {
                 const diff = new Date().getTime() - startPoint;
@@ -207,6 +202,31 @@ document.getElementById('feed');
                 document.getElementById('m').innerText = Math.floor((diff % 3600000) / 60000);
                 document.getElementById('s').innerText = Math.floor((diff % 60000) / 1000);
             }, 1000);
+        }
+
+        // وظيفة عبقرية لنسخ الكود بالبيانات الجديدة
+        function exportCode() {
+            // إخفاء منطقة الأدمن في الكود المنسوخ لكي لا تظهر للطرف الآخر
+            const adminArea = document.getElementById('adminArea');
+            adminArea.style.display = 'none';
+            
+            // تحديث متغير الميموريز في النص
+            let currentFullCode = document.documentElement.outerHTML;
+            const memoriesData = `let memories = ${JSON.stringify(memories)};`;
+            
+            // استبدال الجزء القديم بالجديد
+            const finalCode = currentFullCode.replace(/let memories = \[[\s\S]*?\];/, memoriesData);
+            
+            // نسخ للذاكرة
+            const tempInput = document.createElement("textarea");
+            tempInput.value = "<!DOCTYPE html>\n" + finalCode;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            adminArea.style.display = 'block'; // إعادتها لك
+            alert("تم نسخ الكود الجديد! الآن افتح ملف تكست جديد، الصق الكود، واحفظه بصيغة .html وأرسله لهانا ❤️");
         }
     </script>
 </body>
