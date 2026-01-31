@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>دودو &ميدو ❤️</title>
+    <title>دودو & ميدو ❤️</title>
     <style>
         :root { --pink: #ff4d6d; --bg: #0d0d0d; --card: #161616; }
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
@@ -28,7 +28,7 @@
         /* المربعات التفاعلية */
         .icon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
         .icon-box { background: var(--card); height: 110px; border-radius: 25px; border: 1px solid #222; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; overflow: hidden; cursor: pointer; transition: 0.3s; }
-        .msg-overlay { position: absolute; inset: 0; background: var(--pink); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; padding: 10px; text-align: center; opacity: 0; transition: 0.4s; font-weight: bold; }
+        .msg-overlay { position: absolute; inset: 0; background: var(--pink); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; padding: 10px; text-align: center; opacity: 0; transition: 0.4s; font-weight: bold; color: white; }
         .icon-box.active .msg-overlay { opacity: 1; }
 
         /* معرض الميديا */
@@ -44,7 +44,7 @@
         #final-letter { display: none; background: #000; padding: 30px; border-radius: 25px; border: 2px solid var(--pink); margin: 30px 0 60px; line-height: 2; text-align: center; animation: slideIn 1s; }
 
         /* القلوب */
-        .heart { position: fixed; top: -20px; color: var(--pink); z-index: -1; animation: fall linear infinite; }
+        .heart { position: fixed; top: -20px; color: var(--pink); z-index: -1; animation: fall linear infinite; pointer-events: none; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -52,7 +52,7 @@
 </head>
 <body>
 
-    <audio id="background-audio" loop preload="auto">
+    <audio id="background-audio" loop>
         <source src="https://l.top4top.io/m_3683u9e581.mp3" type="audio/mpeg">
     </audio>
 
@@ -60,14 +60,14 @@
         <div class="login-card">
             <h2 style="color:var(--pink)">دودو & ميدو</h2>
             <p>انتي لسه هتفكري انجزي.. حليها 😂</p>
-            <input type="number" id="pin" placeholder="فكري وليكي بوسه">
+            <input type="password" id="pin" placeholder="فكري وليكي بوسه" inputmode="numeric">
             <button class="btn-enter" onclick="startApp()">افتحي قلبي ❤️</button>
         </div>
     </div>
 
     <div id="main">
         <header>
-            <h1>هنفضل  ❤️</h1>
+            <h1>هنفضل ❤️</h1>
             <p style="color:#666; font-size: 0.9rem;">إلى الأبد ومع بعض دايماً</p>
         </header>
 
@@ -89,7 +89,7 @@
 
         <div class="media-feed">
             <div class="media-item">
-                <video id="v1" loop muted playsinline>
+                <video id="v1" loop playsinline>
                     <source src="https://e.top4top.io/m_3683sbywl0.mp4" type="video/mp4">
                 </video>
                 <div class="media-caption">لحظاتنا اللي مابتتنسيش أبداً ✨</div>
@@ -132,15 +132,13 @@
             
             <div class="media-item">
                 <img src="https://d.top4top.io/p_3683edjcm1.jpg" alt="صورتنا">
-                <div class="media-caption">الحضن الحنين رزق والله</div> ❤️</div>
+                <div class="media-caption">الحضن الحنين رزق والله ❤️</div>
             </div>
             
             <div class="media-item">
                 <img src="https://h.top4top.io/p_3683tb8v21.jpg" alt="صورتنا">
                 <div class="media-caption">اول خروجه عسوله معاكي ❤️</div>
             </div>
-            
-            
         </div>
 
         <div class="reveal-btn" id="revealBtn" onclick="revealLetter()">
@@ -153,25 +151,20 @@
             <br><br>
             <b style="font-size:1.3rem;">بحبك للأبد يا أغلى من حياتي ❤️</b>
         </div>
-        
     </div>
 
     <script>
         function startApp() {
             const pin = document.getElementById('pin').value;
             if(pin === "762002") {
-                document.getElementById('login').style.transform = "translateY(-100%)";
+                document.getElementById('login').style.display = "none";
                 document.getElementById('main').style.display = "block";
                 
                 const audio = document.getElementById('background-audio');
-                audio.volume = 1.0;
-                audio.play().catch(e => console.log("Audio error:", e));
+                audio.play().catch(e => console.log("Audio play blocked"));
 
                 const videos = document.querySelectorAll('video');
-                videos.forEach(v => {
-                    v.play();
-                    v.muted = false;
-                });
+                videos.forEach(v => v.play());
 
                 setInterval(createHeart, 300);
             } else {
@@ -182,7 +175,9 @@
         function revealLetter() {
             document.getElementById('revealBtn').style.display = 'none';
             document.getElementById('final-letter').style.display = 'block';
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 100);
         }
 
         const startDay = new Date('2019-12-07T00:00:00'); 
@@ -191,14 +186,22 @@
             const now = new Date();
             const diff = now - startDay;
 
-            document.getElementById('y').innerText = Math.floor(diff / 31536000000);
-            document.getElementById('mon').innerText = Math.floor((diff % 31536000000) / 2628000000);
-            document.getElementById('d').innerText = Math.floor((diff % 2628000000) / 86400000);
-            document.getElementById('h').innerText = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById('m').innerText = Math.floor((diff % 3600000) / 60000);
-            document.getElementById('s').innerText = Math.floor((diff % 60000) / 1000);
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('y').innerText = years;
+            document.getElementById('mon').innerText = months;
+            document.getElementById('d').innerText = days;
+            document.getElementById('h').innerText = hours;
+            document.getElementById('m').innerText = minutes;
+            document.getElementById('s').innerText = seconds;
         }
         setInterval(updateTimer, 1000);
+        updateTimer();
 
         function createHeart() {
             const h = document.createElement('div');
