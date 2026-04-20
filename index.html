@@ -3,212 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARA & AHMED ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>إلى ملكتي داليا ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;600;900&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pink: #ff2d55;
-            --purple: #1a1a2e;
-            --dark: #0f0c29;
+            --primary: #ff4d7d;
+            --secondary: #7000ff;
+            --accent: #ff00ea;
+            --gold: #d4af37;
+            --bg: #030005;
+            --glass: rgba(255, 255, 255, 0.03);
+            --card-glow: rgba(255, 77, 125, 0.3);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-            color: #fff;
-            font-family: 'Cairo', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
+            background-color: var(--bg); color: white; font-family: 'Cairo', sans-serif;
+            overflow-x: hidden; scroll-behavior: smooth;
+            background: linear-gradient(125deg, #030005, #1a001a, #050010, #1a001a);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
         }
 
-        /* 1. شاشة التحميل الوردية (مثل الفيديو) */
-        #loader {
-            position: fixed; inset: 0;
-            background: #24243e;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10000;
-        }
-        .loading-circle {
-            width: 80px; height: 80px;
-            border: 5px solid rgba(255,45,85,0.2);
-            border-top: 5px solid var(--pink);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* 2. شاشة القفل */
+        @keyframes ultraFloating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-12px) rotate(0.5deg); }
+            66% { transform: translateY(-5px) rotate(-0.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .floating-ui { 
+            animation: ultraFloating 6s cubic-bezier(0.45, 0, 0.55, 1) infinite; 
+            will-change: transform;
+        }
+
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.5; }
+
         #lock-screen {
-            position: fixed; inset: 0;
-            background: rgba(15, 12, 41, 0.95);
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; text-align: center; backdrop-filter: blur(10px);
+            position: fixed; inset: 0; background: var(--bg);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10000; transition: 1s cubic-bezier(0.9, 0, 0.1, 1);
+            backdrop-filter: blur(20px);
         }
-        .lock-card {
-            background: rgba(255,255,255,0.1); padding: 30px;
-            border-radius: 25px; border: 1px solid rgba(255,45,85,0.3);
-            width: 90%; max-width: 350px;
+        .lock-box {
+            background: var(--glass); padding: 50px; border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1); width: 85%; max-width: 400px;
+            text-align: center; backdrop-filter: blur(25px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        input {
-            width: 80%; padding: 12px; border-radius: 12px; border: none;
-            margin: 20px 0; text-align: center; font-size: 1.2rem;
-            outline: none; box-shadow: 0 0 15px rgba(255,45,85,0.2);
+        
+        input#pass {
+            width: 100%; padding: 18px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0,0,0,0.2); color: white; text-align: center; margin: 30px 0; font-size: 1rem;
+        }
+        input#pass::placeholder { color: rgba(255,255,255,0.4); font-size: 0.9rem; }
+
+        .btn-unlock {
+            background: linear-gradient(45deg, var(--primary), var(--secondary)); 
+            color: white; border: none; padding: 20px;
+            border-radius: 25px; width: 100%; font-weight: 900; 
+            cursor: pointer; font-size: 1.5rem;
+            box-shadow: 0 10px 30px rgba(255, 77, 125, 0.3);
+            transition: 0.3s;
         }
 
-        /* 3. المحتوى الرئيسي */
-        #main-content { display: none; padding: 20px; text-align: center; }
+        #main-app { display: none; padding: 20px; max-width: 600px; margin: 0 auto; opacity: 0; transition: 2s; position: relative; z-index: 1; }
+        .fade-in-element { opacity: 0; transform: translateY(20px); transition: 1s all ease-out; }
+        .fade-in-element.visible { opacity: 1; transform: translateY(0); }
 
-        .header-title { font-size: 2.5rem; margin-top: 20px; letter-spacing: 2px; }
-        .sub-text { opacity: 0.8; margin-bottom: 30px; }
+        .patience-badge { text-align: center; margin-top: 60px; margin-bottom: 20px; }
+        .patience-text {
+            font-family: 'Amiri', serif; font-size: 1.8rem; font-weight: bold;
+            background: linear-gradient(to right, var(--gold), #fff, var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
 
-        /* العداد (سنين - شهور - أيام) */
-        .timer-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px auto;
-            max-width: 400px;
+        .hero-name { 
+            font-family: 'Reem Kufi', sans-serif; font-size: 3.5rem; 
+            background: linear-gradient(to bottom, #fff, var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-align: center; margin-bottom: 30px;
         }
-        .timer-box {
-            background: rgba(255,255,255,0.05); padding: 15px;
-            border-radius: 15px; border: 1px solid rgba(255,45,85,0.3);
-        }
-        .timer-box b { display: block; font-size: 1.5rem; color: var(--pink); }
 
-        /* الكروت التفاعلية (أهم جزء في الفيديو) */
-        .cards-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-            max-width: 400px; margin: 30px auto;
+        .heart-timer-container {
+            position: relative; width: 280px; height: 280px; margin: 20px auto;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .card {
-            background: rgba(255,255,255,0.08); height: 120px;
-            border-radius: 20px; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+        .heart-bg {
+            position: absolute; width: 100%; height: 100%; background: var(--primary);
+            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            mask-repeat: no-repeat; mask-position: center; opacity: 0.15;
         }
-        .card.active { background: var(--pink); transform: scale(0.95); }
-        .card i { font-size: 1.5rem; margin-bottom: 5px; }
 
-        /* القلوب */
-        .heart {
-            position: fixed; top: -20px; color: var(--pink);
-            pointer-events: none; animation: fall linear forwards;
-        }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        .timer-content b { font-size: 2.2rem; display: block; color: #fff; text-shadow: 0 0 10px var(--primary); }
 
-        .modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            display: none; justify-content: center; align-items: center; z-index: 10001;
+        /* تعديل ستايل الخط للتواريخ */
+        .dates-container { margin: 30px 0; background: var(--glass); border-radius: 30px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .date-item { 
+            padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); 
+            display: flex; justify-content: space-between; align-items: center; 
         }
-        .modal-content {
-            background: #302b63; padding: 30px; border-radius: 20px;
-            width: 80%; max-width: 300px; text-align: center;
+        .date-item:last-child { border-bottom: none; }
+        .date-item span { 
+            font-family: 'Cairo', sans-serif; font-weight: 600; color: var(--primary); font-size: 1.1rem; 
         }
+        .date-item b { 
+            font-family: 'Amiri', serif; font-size: 1.5rem; color: #fff; letter-spacing: 1px; font-weight: 700;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; }
+        .flip-card { height: 160px; perspective: 1500px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; border-radius: 20px; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); box-shadow: 0 0 30px var(--card-glow); }
+        .front, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .front { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); color: #fff; }
+        .back { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; transform: rotateY(180deg); font-size: 0.9rem; }
+
+        .photo-story-card { 
+            background: var(--glass); border-radius: 30px; overflow: hidden; 
+            margin-bottom: 50px; border: 1px solid rgba(255,255,255,0.05); 
+        }
+        .photo-story-card img { width: 100%; height: auto; opacity: 0.9; }
+        .photo-story-info { padding: 25px; text-align: right; }
+
+        .falling-heart { position: fixed; top: -30px; color: var(--primary); pointer-events: none; animation: fallUp linear forwards; z-index: 100; }
+        @keyframes fallUp { 0% { transform: translateY(110vh) scale(0); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loading-circle"></div>
-        <p style="margin-top: 20px; color: var(--pink);">جاري التحميل ياروحي معلش ✨</p>
-    </div>
+    <canvas id="bg-canvas"></canvas>
 
     <div id="lock-screen">
-        <div class="lock-card">
-            <h2 style="margin-bottom:10px;">🤔 جاهزة؟</h2>
-            <p style="font-size: 0.9rem;">كل اللي هنا هيفضل بيني وبينك طول العمر</p>
-            <input type="password" id="passInput" placeholder="l o v e">
-            <button onclick="unlock()" style="background:var(--pink); color:white; border:none; padding:10px 25px; border-radius:10px; cursor:pointer; width:100%;">يلا بسرعة افتحي 😍</button>
+        <div class="lock-box">
+            <h2 style="color: var(--primary); font-family: 'Reem Kufi', sans-serif; margin-bottom: 10px;">إلى ملكتي داليا ❤️</h2>
+            <input type="password" id="pass" placeholder="تاريخ مهم فكري ي عمري">
+            <button class="btn-unlock" onclick="unlock()">دخول</button>
         </div>
     </div>
 
-    <div id="main-content">
-        <h1 class="header-title">SARA ❤️</h1>
-        <p class="sub-text">يوم ما عرفنا بعض كان يوم ولادتي</p>
-
-        <div class="timer-box" style="margin: 0 auto 20px; max-width: 300px;">
-            <p>💍 يوم خطوبتنا</p>
-            <b>2021-04-04</b>
+    <div id="main-app">
+        <div class="patience-badge fade-in-element floating-ui">
+            <p class="patience-text">صبر 6 سنين.. 12/6/2026</p>
         </div>
 
-        <h3 style="margin-bottom: 10px;">بداية عمري معاكي بقالنا:</h3>
-        <div class="timer-grid">
-            <div class="timer-box"><b id="y">0</b>سنة</div>
-            <div class="timer-box"><b id="m">0</b>شهر</div>
-            <div class="timer-box"><b id="d">0</b>يوم</div>
+        <h1 class="hero-name fade-in-element floating-ui" style="animation-delay: 0.3s;">Mido & Dalia</h1>
+
+        <div class="heart-timer-container fade-in-element floating-ui" style="animation-delay: 0.6s;">
+            <div class="heart-bg"></div>
+            <div class="timer-content" style="text-align: center; z-index: 2;">
+                <b id="countdown">00 : 00 : 00 : 00</b>
+                <span style="font-size: 0.8rem; opacity: 0.6;">يوم : ساعة : دقيقة : ثانية</span>
+            </div>
         </div>
 
-        <p style="margin-top: 30px;">اقفي هنا شوية متجريش 😂❤️</p>
-        <div class="cards-container">
-            <div class="card" onclick="showMsg('بحبك يا نور عيني')">❤️<br>الأول</div>
-            <div class="card" onclick="showMsg('بموت فيكي يا أغلى ما عندي')">❤️<br>الثاني</div>
-            <div class="card" onclick="showMsg('حياتي باختصار هي إنتي')">❤️<br>الثالث</div>
-            <div class="card" onclick="showMsg('ربنا يخليكي ليا يا روحي')">❤️<br>الرابع</div>
+        <div class="dates-container fade-in-element floating-ui" style="animation-delay: 1s;">
+            <div class="date-item"><span>يوم حبنا</span><b>07 / 12 / 2019</b></div>
+            <div class="date-item"><span>يوم الخطوبة</span><b>29 / 07 / 2022</b></div>
+            <div class="date-item"><span>كتب الكتاب</span><b>30 / 12 / 2022</b></div>
         </div>
 
-        <div style="margin-top: 40px; padding-bottom: 50px;">
-            <p>أجمل صورنا 👇</p>
-            <img src="https://via.placeholder.com/350x450" style="width:90%; border-radius:20px; margin-top:15px; border: 2px solid var(--pink);">
+        <div class="cards-grid fade-in-element">
+            <div class="flip-card floating-ui" style="animation-delay: 0.2s;" onclick="toggleCard(this, 'song1')">
+                <div class="flip-card-inner">
+                    <div class="front">أجمل صدفة ❤️</div>
+                    <div class="back">إنتي الصدفة اللي غيرت حياتي للأبد</div>
+                </div>
+                <audio id="song1" src="https://d.top4top.io/m_3762pmle51.mp3" preload="auto"></audio>
+            </div>
+            <div class="flip-card floating-ui" style="animation-delay: 1.2s;" onclick="toggleCard(this, 'song2')">
+                <div class="flip-card-inner">
+                    <div class="front">أحن قلب 😍</div>
+                    <div class="back">يا أحلى وأحن إنسانة شافتها عيني</div>
+                </div>
+                <audio id="song2" src="https://f.top4top.io/m_3762588zs2.mp3" preload="auto"></audio>
+            </div>
+            <div class="flip-card floating-ui" style="animation-delay: 0.7s;" onclick="toggleCard(this, 'song3')">
+                <div class="flip-card-inner">
+                    <div class="front">سندي ✨</div>
+                    <div class="back">سندي وضهري وأماني في الدنيا دي</div>
+                </div>
+                <audio id="song3" src="https://h.top4top.io/m_37626r8bh1.mp3" preload="auto"></audio>
+            </div>
+            <div class="flip-card floating-ui" style="animation-delay: 1.5s;" onclick="toggleCard(this, 'song4')">
+                <div class="flip-card-inner">
+                    <div class="front">وعدي ليكي 💍</div>
+                    <div class="back">هفضل أحبك وأصونك لآخر يوم في عمري</div>
+                </div>
+                <audio id="song4" src="https://b.top4top.io/m_3762azj7w1.mp3" preload="auto"></audio>
+            </div>
         </div>
-    </div>
 
-    <div id="modal" class="modal" onclick="this.style.display='none'">
-        <div class="modal-content">
-            <p id="modal-text"></p>
-            <button style="margin-top:20px; background:var(--pink); border:none; color:white; padding:5px 15px; border-radius:5px;">إغلاق</button>
+        <h2 style="font-family: 'Amiri', serif; color: var(--primary); text-align: center; margin: 60px 0 30px;" class="fade-in-element">حكايتنا في صور ✨</h2>
+
+        <div class="photo-story-card fade-in-element floating-ui" style="animation-delay: 0.3s;">
+            <img src="https://b.top4top.io/p_3762hlmaa1.jpg">
+            <div class="photo-story-info"><h3>بداية الحكاية ❤️</h3><p>"يوم 7-12-2019 كان أول فصل في أجمل قصة حب."</p></div>
         </div>
+
+        <div class="photo-story-card fade-in-element floating-ui" style="animation-delay: 0.9s;">
+            <img src="https://i.top4top.io/p_3762uc9ty1.jpg">
+            <div class="photo-story-info"><h3>يوم خطوبتنا 💍</h3><p>"يوم 29-7-2022 لما وعدتك قدام الكل."</p></div>
+        </div>
+
+        <div id="last-photo" class="photo-story-card fade-in-element floating-ui" style="animation-delay: 1.4s;">
+            <img src="https://k.top4top.io/p_37626r4jb1.jpg">
+            <div class="photo-story-info"><h3>الفرح القريب 🏠</h3><p>"نعد الأيام ليوم 12-6-2026 عشان يجمعنا بيت واحد."</p></div>
+        </div>
+        
+        <audio id="last-photo-song" src="https://i.top4top.io/m_37623pu851.mp3" preload="auto"></audio>
+
+        <footer style="padding: 60px 0; opacity: 0.5; text-align: center;">DALIA ❤️ MIDO | 2026</footer>
     </div>
 
     <script>
-        // 1. إخفاء التحميل وإظهار القفل
-        setTimeout(() => {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('lock-screen').style.display = 'flex';
-        }, 3000);
+        function stopAllMusic() {
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        }
 
-        // 2. فتح الموقع
-        function unlock() {
-            const p = document.getElementById('passInput').value;
-            if(p.toLowerCase() === "love") {
-                document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                startTimer();
-                setInterval(createHeart, 300);
-            } else {
-                alert("كلمة السر هي love ياروحي 😂");
+        function toggleCard(clickedCard, songId) {
+            const isFlipped = clickedCard.classList.contains('flipped');
+            document.querySelectorAll('.flip-card').forEach(card => card.classList.remove('flipped'));
+            stopAllMusic();
+            if (!isFlipped) {
+                clickedCard.classList.add('flipped');
+                document.getElementById(songId).play().catch(() => {});
             }
         }
 
-        // 3. عداد الوقت (من 4-4-2021)
-        function startTimer() {
-            const start = new Date("2021-04-04");
+        window.addEventListener('scroll', () => {
+            const lastPhoto = document.getElementById('last-photo');
+            const song = document.getElementById('last-photo-song');
+            const rect = lastPhoto.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                if (song.paused) song.play().catch(() => {});
+            } else {
+                song.pause();
+            }
+        });
+
+        function unlock() {
+            if(document.getElementById('pass').value === '1262026') {
+                document.getElementById('lock-screen').style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = "none";
+                    document.getElementById('main-app').style.display = "block";
+                    setTimeout(() => { document.getElementById('main-app').style.opacity = "1"; triggerFadeIn(); }, 100);
+                    startCountdown();
+                    setInterval(spawnHeart, 300);
+                }, 1000);
+            } else { alert("غلط ي دودو"); }
+        }
+
+        function triggerFadeIn() {
+            document.querySelectorAll('.fade-in-element').forEach((el, index) => {
+                setTimeout(() => el.classList.add('visible'), index * 200);
+            });
+        }
+
+        function startCountdown() {
+            const target = new Date("June 12, 2026 21:00:00").getTime();
             setInterval(() => {
-                const now = new Date();
-                let years = now.getFullYear() - start.getFullYear();
-                let months = now.getMonth() - start.getMonth();
-                let days = now.getDate() - start.getDate();
-
-                if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
-                if (months < 0) { years--; months += 12; }
-
-                document.getElementById('y').innerText = years;
-                document.getElementById('m').innerText = months;
-                document.getElementById('d').innerText = days;
+                const now = new Date().getTime();
+                const diff = target - now;
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('countdown').innerText = `${d} : ${h} : ${m} : ${s}`;
             }, 1000);
         }
 
-        // 4. عرض الرسائل من الكروت
-        function showMsg(text) {
-            document.getElementById('modal-text').innerText = text;
-            document.getElementById('modal').style.display = 'flex';
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let pts = [];
+        function init() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        init(); window.onresize = init;
+        class Pt {
+            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.v = Math.random()*0.3+0.1; this.r = Math.random()*2; }
+            draw() { this.y -= this.v; if(this.y < 0) this.y = canvas.height; ctx.fillStyle = "rgba(255, 77, 125, 0.4)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fill(); }
         }
+        for(let i=0; i<80; i++) pts.push(new Pt());
+        function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); pts.forEach(p=>p.draw()); requestAnimationFrame(anim); }
+        anim();
 
-        // 5. القلوب المتساقطة
-        function createHeart() {
+        function spawnHeart() {
             const h = document.createElement('div');
-            h.className = 'heart';
-            h.innerHTML = '❤️';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            h.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            h.className = 'falling-heart'; h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.animationDuration = (Math.random() * 3 + 3) + "s";
             document.body.appendChild(h);
             setTimeout(() => h.remove(), 5000);
         }
