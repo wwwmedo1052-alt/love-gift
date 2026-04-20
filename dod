@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-bg: #000000;
+            --accent: #ff2d55;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--main-bg);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* شاشة الدخول - تشبه قفل الهاتف */
+        #lock-screen {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; z-index: 100; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .pass-container {
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .pass-container h2 { font-family: 'Dancing Script', cursive; font-size: 3rem; margin-bottom: 10px; color: var(--accent); }
+
+        input#password {
+            background: var(--glass); border: 1px solid var(--accent);
+            padding: 15px; border-radius: 50px; color: white;
+            text-align: center; font-size: 1.2rem; width: 200px; outline: none;
+            box-shadow: 0 0 15px rgba(255, 45, 85, 0.3);
+        }
+
+        /* المحتوى الرئيسي */
+        #content {
+            display: none; opacity: 0; transition: 1s;
+            padding: 20px; max-width: 500px; margin: 0 auto;
+        }
+
+        /* صورة البروفايل الدائرية */
+        .profile-header {
+            margin: 40px 0; position: relative;
+        }
+        .profile-header img {
+            width: 150px; height: 150px; border-radius: 50%;
+            border: 3px solid var(--accent); padding: 5px;
+            box-shadow: 0 0 25px var(--accent);
+        }
+
+        /* العداد الزمني - أهم جزء في الفيديو */
+        .main-counter {
+            background: var(--glass); padding: 20px; border-radius: 25px;
+            margin: 20px 0; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .main-counter h4 { margin: 0; color: #aaa; }
+        .time-digits { font-size: 2.2rem; font-weight: bold; margin: 10px 0; letter-spacing: 2px; }
+
+        /* كروت التواريخ */
+        .date-card {
+            background: linear-gradient(135deg, #ff2d55 0%, #b31d3b 100%);
+            padding: 15px; border-radius: 20px; margin: 15px 0;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* معرض الصور المصغر */
+        .gallery {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 30px;
+        }
+        .gallery-item {
+            background: var(--glass); border-radius: 15px; overflow: hidden;
+            height: 200px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* القلوب المتساقطة */
+        .heart-fall {
+            position: fixed; top: -20px; pointer-events: none;
+            animation: fall linear forwards; z-index: 50;
+        }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="pass-container">
+            <h2>Sara ❤️</h2>
+            <p>كلمة السر هي (love)</p>
+            <input type="password" id="password" placeholder="أدخلي كلمة السر" oninput="checkPass(this.value)">
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/150" alt="Love Image">
+            <h2 style="margin-top: 15px;">أحمد & سارة</h2>
+        </div>
+
+        <div class="main-counter">
+            <h4>لقد مر على حبنا</h4>
+            <div class="time-digits" id="timer">00 : 00 : 00 : 00</div>
+            <p id="sub-timer" style="font-size: 0.9rem; color: var(--accent);"></p>
+        </div>
+
+        <div class="date-card">
+            <span>💍 يوم خطوبتنا</span>
+            <strong>2021 / 04 / 04</strong>
+        </div>
+
+        <div class="date-card" style="background: var(--glass); border: 1px solid var(--accent);">
+            <span>👰 يوم فرحنا</span>
+            <strong>2026 / 07 / 20</strong>
+        </div>
+
+        <h3 style="text-align: right; margin-top: 40px;">أجمل لحظاتنا ❤️</h3>
+        <div class="gallery">
+            <div class="gallery-item"><img src="https://via.placeholder.com/200x300" alt="صورة 1"></div>
+            <div class="gallery-item"><img src="https://via.placeholder.com/200x300" alt="صورة 2"></div>
+            <div class="gallery-item"><img src="https://via.placeholder.com/200x300" alt="صورة 3"></div>
+            <div class="gallery-item"><img src="https://via.placeholder.com/200x300" alt="صورة 4"></div>
+        </div>
+
+        <footer style="margin: 50px; opacity: 0.4; font-size: 0.8rem;">
+            أنتِ أجمل صدفة في حياتي
+        </footer>
+    </div>
+
+    <script>
+        // التحقق من كلمة السر والدخول بتأثير ناعم
+        function checkPass(val) {
+            if(val.toLowerCase() === "love") {
+                const lock = document.getElementById('lock-screen');
+                const content = document.getElementById('content');
+                
+                lock.style.transform = "translateY(-100%)";
+                setTimeout(() => {
+                    lock.style.display = "none";
+                    content.style.display = "block";
+                    setTimeout(() => content.style.opacity = "1", 100);
+                    startMainTimer();
+                    startHearts();
+                }, 800);
+            }
+        }
+
+        // عداد الوقت الاحترافي (من تاريخ الخطوبة)
+        function startMainTimer() {
+            const startDate = new Date("April 4, 2021 00:00:00").getTime();
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = now - startDate;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('timer').innerHTML = `${days}d : ${hours}h : ${mins}m : ${secs}s`;
+                
+                // حساب الثواني الكلية لإظهار ضخامة الرقم كما في الفيديو
+                const totalSecs = Math.floor(diff / 1000);
+                document.getElementById('sub-timer').innerText = `بما يعادل ${totalSecs.toLocaleString()} ثانية من الحب`;
+            }, 1000);
+        }
+
+        // تساقط القلوب بشكل عشوائي
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = ["❤️", "💖", "💕", "🌸"][Math.floor(Math.random() * 4)];
+                heart.className = 'heart-fall';
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+                heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                heart.style.opacity = Math.random();
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
