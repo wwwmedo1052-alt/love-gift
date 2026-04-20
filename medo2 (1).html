@@ -1,217 +1,171 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>دودو & ميدو ❤️</title>
-    <style>
-        :root { --pink: #ff4d6d; --bg: #0d0d0d; --card: #161616; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Love Story ❤️</title>
 
-        /* شاشة الدخول */
-        #login { position: fixed; inset: 0; background: #000; z-index: 1000; display: flex; align-items: center; justify-content: center; transition: 0.8s; }
-        .login-card { width: 85%; max-width: 350px; background: #0a0a0a; padding: 30px; border-radius: 30px; border: 1px solid #222; text-align: center; box-shadow: 0 0 20px rgba(255, 77, 109, 0.2); }
-        input { width: 100%; padding: 15px; background: #000; border: 1px solid #333; border-radius: 15px; color: white; text-align: center; margin: 20px 0; outline: none; font-size: 1rem; }
-        .btn-enter { width: 100%; padding: 15px; background: var(--pink); border: none; border-radius: 15px; color: white; font-weight: bold; cursor: pointer; font-size: 1.1rem; }
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0d0d0d;
+    color: white;
+    overflow-x: hidden;
+}
 
-        /* المحتوى الرئيسي */
-        #main { display: none; padding: 15px; animation: fadeIn 1.5s; }
-        header { text-align: center; margin-bottom: 30px; }
-        header h1 { font-size: 2.2rem; color: var(--pink); margin: 0; text-shadow: 0 0 10px rgba(255, 77, 109, 0.4); }
+/* خلفية القلوب */
+.hearts {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
 
-        /* العداد */
-        .timer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
-        .t-box { background: var(--card); padding: 15px 5px; border-radius: 18px; border: 1px solid #222; text-align: center; }
-        .t-box span { display: block; font-size: 1.6rem; font-weight: bold; color: var(--pink); }
-        .t-box p { margin: 5px 0 0; font-size: 0.7rem; color: #888; }
+.heart {
+    position: absolute;
+    color: red;
+    animation: float 6s linear infinite;
+}
 
-        /* المربعات التفاعلية */
-        .icon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .icon-box { background: var(--card); height: 110px; border-radius: 25px; border: 1px solid #222; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; overflow: hidden; cursor: pointer; transition: 0.3s; }
-        .msg-overlay { position: absolute; inset: 0; background: var(--pink); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; padding: 10px; text-align: center; opacity: 0; transition: 0.4s; font-weight: bold; color: white; }
-        .icon-box.active .msg-overlay { opacity: 1; }
+@keyframes float {
+    0% {transform: translateY(100vh); opacity: 1;}
+    100% {transform: translateY(-10vh); opacity: 0;}
+}
 
-        /* معرض الميديا */
-        .media-feed { display: flex; flex-direction: column; gap: 20px; }
-        .media-item { background: var(--card); border-radius: 25px; border: 1px solid #222; padding: 12px; text-align: center; }
-        .media-item video, .media-item img { width: 100%; border-radius: 20px; display: block; }
-        .media-caption { padding: 15px 5px; font-size: 1rem; color: #fff; border-top: 1px solid #333; margin-top: 10px; line-height: 1.4; }
+/* الكارت الرئيسي */
+.container {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
 
-        /* زر الكشف الأخير */
-        .reveal-btn { background: #1a1a1a; padding: 20px; border-radius: 20px; border: 2px dashed var(--pink); color: white; text-align: center; cursor: pointer; margin: 30px 0; font-weight: bold; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        
-        #final-letter { display: none; background: #000; padding: 30px; border-radius: 25px; border: 2px solid var(--pink); margin: 30px 0 60px; line-height: 2; text-align: center; animation: slideIn 1s; }
+/* صندوق المحادثة */
+.chat {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 15px;
+    max-width: 400px;
+    margin: auto;
+}
 
-        /* القلوب */
-        .heart { position: fixed; top: -20px; color: var(--pink); z-index: -1; animation: fall linear infinite; pointer-events: none; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    </style>
+/* الرسائل */
+.msg {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.me {
+    background: #ff4d6d;
+    margin-left: auto;
+}
+
+.you {
+    background: #333;
+}
+
+/* الصور */
+.gallery img {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+/* التواريخ */
+.dates {
+    text-align: center;
+    margin-top: 20px;
+    background: #111;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* زر رفع الصور */
+input {
+    margin-top: 10px;
+}
+</style>
 </head>
+
 <body>
 
-    <audio id="background-audio" loop>
-        <source src="https://l.top4top.io/m_3683u9e581.mp3" type="audio/mpeg">
-    </audio>
+<div class="hearts" id="hearts"></div>
 
-    <div id="login">
-        <div class="login-card">
-            <h2 style="color:var(--pink)">دودو & ميدو</h2>
-            <p>انتي لسه هتفكري انجزي.. حليها 😂</p>
-            <input type="password" id="pin" placeholder="فكري وليكي بوسه" inputmode="numeric">
-            <button class="btn-enter" onclick="startApp()">افتحي قلبي ❤️</button>
-        </div>
+<div class="container">
+
+    <h2 style="text-align:center;">❤️ Our Love Story ❤️</h2>
+
+    <div class="chat">
+        <div class="msg you">فاكر أول يوم قابلنا بعض؟ 🥺</div>
+        <div class="msg me">أحلى يوم في حياتي ❤️</div>
+        <div class="msg you">بحبك جدا 😍</div>
+        <div class="msg me">وأنا بعشقك ❤️❤️❤️</div>
     </div>
 
-    <div id="main">
-        <header>
-            <h1>هنفضل ❤️</h1>
-            <p style="color:#666; font-size: 0.9rem;">إلى الأبد ومع بعض دايماً</p>
-        </header>
-
-        <div class="timer-grid">
-            <div class="t-box"><span id="y">0</span><p>سنة</p></div>
-            <div class="t-box"><span id="mon">0</span><p>شهر</p></div>
-            <div class="t-box"><span id="d">0</span><p>يوم</p></div>
-            <div class="t-box"><span id="h">0</span><p>ساعة</p></div>
-            <div class="t-box"><span id="m">0</span><p>دقيقة</p></div>
-            <div class="t-box"><span id="s">0</span><p>ثانية</p></div>
-        </div>
-
-        <div class="icon-grid">
-            <div class="icon-box" onclick="this.classList.toggle('active')">🏠<div class="msg-overlay">انتي بيتي وأماني وكل دنيتي ❤️</div></div>
-            <div class="icon-box" onclick="this.classList.toggle('active')">🌹<div class="msg-overlay">أجمل وردة في حياتي نورتلي عمري ✨</div></div>
-            <div class="icon-box" onclick="this.classList.toggle('active')">💍<div class="msg-overlay">وعد عليا نفضل سوا لآخر العمر ♾️</div></div>
-            <div class="icon-box" onclick="this.classList.toggle('active')">✉️<div class="msg-overlay">رسالة لقلبك: بحبك أكتر من أي حاجة ❤️</div></div>
-        </div>
-
-        <div class="media-feed">
-            <div class="media-item">
-                <video id="v1" loop playsinline>
-                    <source src="https://a.top4top.io/m_3683qgdf40.mp4" type="video/mp4">
-                </video>
-                <div class="media-caption">لحظاتنا اللي مابتتنسيش أبداً ✨</div>
-            </div>
-
-            <div class="media-item">
-                <img src="https://l.top4top.io/p_3683bhj301.jpg" alt="صورتنا">
-                <div class="media-caption">اجمل لحظه ف حياتنا ❤️</div>
-            </div>
-
-            <div class="media-item">
-                <img src="https://c.top4top.io/p_3683vu5rf1.jpg" alt="صورتنا">
-                <div class="media-caption">ومين قال الملاك مبيضحكش ❤️</div>
-            </div>
-
-            <div class="media-item">
-                <img src="https://l.top4top.io/p_3683jehtu1.jpg" alt="صورتنا">
-                <div class="media-caption">انا عايش ليكي وبيكي ❤️</div>
-            </div>
-
-            <div class="media-item">
-                <img src="https://b.top4top.io/p_3683fapoj1.jpg" alt="صورتنا">
-                <div class="media-caption">حتي لو وصفتلك مش هعرف اقول كله ❤️</div>
-            </div>
-            
-            <div class="media-item">
-                <img src="https://a.top4top.io/p_3683895jg1.jpg" alt="صورتنا">
-                <div class="media-caption">مش بحبك من قليل ❤️</div>
-            </div>
-            
-            <div class="media-item">
-                <img src="https://a.top4top.io/p_3683luxl61.jpg" alt="صورتنا">
-                <div class="media-caption">فاكره دي صح ❤️</div>
-            </div>
-            
-            <div class="media-item">
-                <img src="https://f.top4top.io/p_3683fzlc21.jpg" alt="صورتنا">
-                <div class="media-caption">يوم ميتعوضش ❤️</div>
-            </div>
-            
-            <div class="media-item">
-                <img src="https://d.top4top.io/p_3683edjcm1.jpg" alt="صورتنا">
-                <div class="media-caption">الحضن الحنين رزق والله ❤️</div>
-            </div>
-            
-            <div class="media-item">
-                <img src="https://h.top4top.io/p_3683tb8v21.jpg" alt="صورتنا">
-                <div class="media-caption">اول خروجه عسوله معاكي ❤️</div>
-            </div>
-        </div>
-
-        <div class="reveal-btn" id="revealBtn" onclick="revealLetter()">
-            <span>في حاجة أخيرة ليكي.. 🎁</span>
-        </div>
-
-        <div id="final-letter">
-            <h3 style="color:var(--pink)">إلى ملكة قلبي "حبيبة" ❤️</h3>
-            عايز أقولك إن وجودك في حياتي هو أكبر نعمة من ربنا.. أنتي مش بس حبيبتي، أنتي أماني وسكني وبنتي. هفضل دايماً جنبك وسندك في كل حاجة ومهما حصل هفضل احبك ولو رجع بيا الزمن مش هختار غيرك وبيكي اكتفيت وعاوز اكمل عمري بيكي يا نجمة من السما ووقعت في قلبي نورته، بعشقك يا بسكويتة قلبي وعمري ما هبطل احبك ابداً.
-            <br><br>
-            <b style="font-size:1.3rem;">بحبك للأبد يا أغلى من حياتي ❤️</b>
-        </div>
+    <!-- إضافة صور -->
+    <div class="gallery">
+        <h3>📸 صورنا</h3>
+        <input type="file" multiple onchange="addImages(event)">
+        <div id="images"></div>
     </div>
 
-    <script>
-        function startApp() {
-            const pin = document.getElementById('pin').value;
-            if(pin === "762002") {
-                document.getElementById('login').style.display = "none";
-                document.getElementById('main').style.display = "block";
-                
-                const audio = document.getElementById('background-audio');
-                audio.play().catch(e => console.log("Audio play blocked"));
+    <!-- التواريخ -->
+    <div class="dates">
+        <h3>💍 مناسباتنا</h3>
+        <p>يوم الخطوبة: <span id="engagement">--</span></p>
+        <p>يوم الفرح: <span id="wedding">--</span></p>
 
-                const videos = document.querySelectorAll('video');
-                videos.forEach(v => v.play());
+        <input type="date" onchange="setDate('engagement', this.value)">
+        <br>
+        <input type="date" onchange="setDate('wedding', this.value)">
+    </div>
 
-                setInterval(createHeart, 300);
-            } else {
-                alert("فكري صح 😂❤️");
-            }
+</div>
+
+<script>
+
+// قلوب متحركة
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+
+    document.getElementById("hearts").appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+}
+
+setInterval(createHeart, 300);
+
+// إضافة صور
+function addImages(event) {
+    const container = document.getElementById("images");
+    const files = event.target.files;
+
+    for (let file of files) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            container.appendChild(img);
         }
+        reader.readAsDataURL(file);
+    }
+}
 
-        function revealLetter() {
-            document.getElementById('revealBtn').style.display = 'none';
-            document.getElementById('final-letter').style.display = 'block';
-            setTimeout(() => {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }, 100);
-        }
+// حفظ التواريخ
+function setDate(type, value) {
+    document.getElementById(type).innerText = value;
+}
 
-        const startDay = new Date('2019-12-07T00:00:00'); 
+</script>
 
-        function updateTimer() {
-            const now = new Date();
-            const diff = now - startDay;
-
-            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
-            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('y').innerText = years;
-            document.getElementById('mon').innerText = months;
-            document.getElementById('d').innerText = days;
-            document.getElementById('h').innerText = hours;
-            document.getElementById('m').innerText = minutes;
-            document.getElementById('s').innerText = seconds;
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
-        function createHeart() {
-            const h = document.createElement('div');
-            h.className = 'heart'; h.innerHTML = '❤️';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            h.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 5000);
-        }
-    </script>
 </body>
 </html>
