@@ -3,246 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قصتنا الجميلة ❤️</title>
+    <title>SARA ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #ff4d6d;
-            --secondary-color: #590d22;
-            --bg-color: #1a1a2e;
+            --accent-color: #ff4d6d;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --bg-color: #0f0c29;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-color);
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
             color: white;
+            min-height: 100vh;
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            text-align: center;
         }
 
-        /* شاشة القفل */
+        /* شاشة التحميل والكلمة السرية */
         #lock-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: 0.8s ease-in-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f0c29; display: flex; justify-content: center;
+            align-items: center; z-index: 9999; transition: 1s;
         }
 
-        .login-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            text-align: center;
-            border: 1px solid rgba(255, 77, 109, 0.3);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        .login-card {
+            background: var(--card-bg); padding: 30px; border-radius: 25px;
+            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2);
+            width: 80%; max-width: 350px;
         }
 
-        input[type="password"] {
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            outline: none;
-            text-align: center;
-            font-size: 1.2rem;
-            margin: 15px 0;
-            width: 80%;
+        input {
+            width: 80%; padding: 12px; border-radius: 10px; border: none;
+            margin: 15px 0; font-size: 1.2rem; text-align: center;
         }
-
-        .btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: 0.3s;
-        }
-
-        .btn:hover { transform: scale(1.05); background-color: #ff758f; }
 
         /* المحتوى الرئيسي */
-        #main-content { display: none; padding: 20px; text-align: center; }
+        #main-content { display: none; padding-top: 50px; }
 
-        .profile-img {
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            border: 4px solid var(--primary-color);
-            margin-top: 30px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 77, 109, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
-        }
-
-        /* العداد الزمني */
+        .love-header { font-size: 2.5rem; margin-bottom: 10px; }
+        
+        /* العداد الزمني الاحترافي */
         .timer-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 30px 0;
+            display: flex; justify-content: center; gap: 15px; margin: 20px 0;
+        }
+        .time-box {
+            background: var(--card-bg); padding: 10px; border-radius: 12px;
+            min-width: 60px; border: 1px solid var(--accent-color);
+        }
+        .time-box span { display: block; font-size: 1.5rem; font-weight: bold; }
+
+        /* كروت المهام (كما في الفيديو) */
+        .cards-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            padding: 20px; max-width: 500px; margin: 0 auto;
         }
 
-        .timer-box {
-            background: rgba(255, 77, 109, 0.2);
-            padding: 15px 5px;
-            border-radius: 15px;
-            border: 1px solid var(--primary-color);
+        .card {
+            background: var(--card-bg); height: 150px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; cursor: pointer; transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative; overflow: hidden;
         }
-
-        .timer-box span { display: block; font-size: 1.5rem; font-weight: bold; }
-        .timer-box label { font-size: 0.8rem; opacity: 0.8; }
-
-        /* كروت التواريخ (الفرح والخطوبة) */
-        .event-card {
-            background: linear-gradient(45deg, #590d22, #ff4d6d);
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 400px;
-            position: relative;
+        .card.locked::after {
+            content: '🔒'; position: absolute; font-size: 1.5rem;
         }
+        .card.open { background: var(--accent-color); }
 
-        /* الصور */
-        .photo-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .photo-card {
-            background: rgba(255,255,255,0.05);
-            padding: 10px;
-            border-radius: 15px;
-        }
-
-        .photo-card img {
-            width: 100%;
-            border-radius: 10px;
-            max-height: 400px;
-            object-fit: cover;
+        /* قسم الصور */
+        .photo-section img {
+            width: 90%; border-radius: 20px; margin: 15px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* القلوب المتساقطة */
         .heart {
-            position: fixed;
-            color: var(--primary-color);
-            top: -10%;
-            z-index: -1;
-            animation: fall linear forwards;
+            position: fixed; top: -10%; font-size: 20px;
+            animation: fall linear forwards; z-index: -1;
         }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-        @keyframes fall {
-            to { transform: translateY(110vh); }
-        }
-
+        .hidden { display: none; }
+        .visible { display: block; animation: fadeIn 1s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="lock-screen">
-        <div class="login-box">
-            <h2>أهلاً بكِ يا أميرتي ❤️</h2>
-            <p>أدخلي كلمة السر لرؤية المفاجأة</p>
-            <input type="password" id="passInput" placeholder="Password">
-            <br>
-            <button class="btn" onclick="checkPass()">افتحي القلب 😍</button>
-            <p id="error" style="color: #ffccd5; font-size: 0.9rem; margin-top: 10px;"></p>
+        <div class="login-card">
+            <div style="font-size: 40px;">🤔</div>
+            <h3>جاهزة؟</h3>
+            <p>كل اللي هنا هيفضل بيني وبينك طول العمر</p>
+            <input type="password" id="pass" placeholder="l o v e">
+            <button onclick="unlock()" style="background:var(--accent-color); color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">يلا بسرعة افتحي 😍</button>
         </div>
     </div>
 
     <div id="main-content">
-        <img src="https://via.placeholder.com/150" class="profile-img" alt="صورة الزوجين">
-        <h1>سارة & أحمد ❤️</h1>
-        
-        <div class="event-card">
-            <h3>💍 يوم خطوبتنا</h3>
-            <p>04 - 04 - 2021</p>
+        <div class="love-header">SARA ❤️</div>
+        <p>يوم ما عرفنا بعض كان يوم ولادتي</p>
+
+        <div class="time-box" style="width: fit-content; margin: 0 auto 20px; padding: 15px 30px;">
+            <div style="color: var(--accent-color);">💍 يوم خطوبتنا</div>
+            <div style="font-size: 1.2rem;">2021-04-04</div>
         </div>
 
-        <div class="event-card">
-            <h3>👰 يوم فرحنا</h3>
-            <p>قريباً إن شاء الله</p>
+        <div class="time-box" style="width: fit-content; margin: 0 auto 20px; padding: 15px 30px;">
+            <div style="color: var(--accent-color);">🤵 يوم فرحنا</div>
+            <div style="font-size: 1.2rem;">2026-07-20</div> </div>
+
+        <h3>بداية عمري معاكي بقالنا:</h3>
+        <div class="timer-container">
+            <div class="time-box"><span id="d">0</span>سنة</div>
+            <div class="time-box"><span id="m">0</span>شهر</div>
+            <div class="time-box"><span id="day">0</span>يوم</div>
         </div>
 
-        <h3>لقد مر على حبنا:</h3>
-        <div class="timer-container" id="timer">
-            <div class="timer-box"><span id="days">0</span><label>يوم</label></div>
-            <div class="timer-box"><span id="hours">0</span><label>ساعة</label></div>
-            <div class="timer-box"><span id="minutes">0</span><label>دقيقة</label></div>
-            <div class="timer-box"><span id="seconds">0</span><label>ثانية</label></div>
+        <p>اقفي هنا شوية متجريش 😂❤️</p>
+
+        <div class="cards-grid">
+            <div class="card" onclick="openCard(this, 'بحبك يا نور عيني')">❤️<br>الأول</div>
+            <div class="card" onclick="openCard(this, 'بموت فيكي يا أغلى ما عندي')">❤️<br>الثاني</div>
+            <div class="card" onclick="openCard(this, 'حياتي باختصار هي إنتي')">❤️<br>الثالث</div>
+            <div class="card" onclick="openCard(this, 'ربنا يخليكي ليا يا روحي')">❤️<br>الرابع</div>
         </div>
 
-        <div class="photo-gallery">
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/400x500" alt="صورة 1">
-                <p>يوم ما عرفنا بعض كان يوم ولادتي ❤️</p>
-            </div>
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/400x500" alt="صورة 2">
-                <p>أجمل حاجة في حياتي هي إنتي 😍</p>
-            </div>
+        <div id="card-message" style="margin: 20px; color: var(--accent-color); font-weight: bold; font-size: 1.3rem;"></div>
+
+        <div class="photo-section">
+            <p>أجمل لحظاتنا 👇</p>
+            <img src="https://via.placeholder.com/400x500/ff4d6d/ffffff?text=Your+Photo+1" alt="صورة 1">
+            <img src="https://via.placeholder.com/400x500/302b63/ffffff?text=Your+Photo+2" alt="صورة 2">
         </div>
 
-        <footer style="margin: 50px 0; opacity: 0.5;">
-            صنع بكل حب لكِ ❤️
-        </footer>
+        <div style="padding: 40px; opacity: 0.7;">
+            Designed with love for SARA ❤️
+        </div>
     </div>
 
     <script>
-        // التحقق من كلمة السر
-        function checkPass() {
-            const pass = document.getElementById('passInput').value;
-            if(pass.toLowerCase() === "love") {
-                document.getElementById('lock-screen').style.transform = "translateY(-100%)";
-                document.getElementById('main-content').style.display = "block";
-                startTimer();
-                createHearts();
+        // دالة الدخول
+        function unlock() {
+            const p = document.getElementById('pass').value;
+            if(p.toLowerCase() === "love") {
+                document.getElementById('lock-screen').style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = "none";
+                    document.getElementById('main-content').classList.add('visible');
+                    startCounter();
+                    makeHearts();
+                }, 1000);
             } else {
-                document.getElementById('error').innerText = "كلمة السر غلط يا روحي! جربي 'love'";
+                alert("كلمة السر هي love يا روحي 😂");
             }
         }
 
-        // العداد الزمني (عدل التاريخ هنا)
-        function startTimer() {
-            const startDate = new Date("April 4, 2021 00:00:00").getTime();
-
-            setInterval(function() {
+        // عداد الوقت (تاريخ البداية)
+        function startCounter() {
+            const start = new Date("April 4, 2021").getTime();
+            setInterval(() => {
                 const now = new Date().getTime();
-                const distance = now - startDate;
+                const diff = now - start;
+                
+                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+                const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+                const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
 
-                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById('d').innerText = years;
+                document.getElementById('m').innerText = months;
+                document.getElementById('day').innerText = days;
             }, 1000);
         }
 
-        // تساقط القلوب
-        function createHearts() {
+        // فتح الكروت
+        function openCard(element, msg) {
+            element.classList.add('open');
+            element.innerHTML = "💖";
+            document.getElementById('card-message').innerText = msg;
+        }
+
+        // تأثير القلوب
+        function makeHearts() {
             setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-                heart.style.fontSize = Math.random() * 20 + 10 + "px";
-                document.body.appendChild(heart);
-                
-                setTimeout(() => { heart.remove(); }, 5000);
-            }, 300);
+                const h = document.createElement('div');
+                h.className = 'heart';
+                h.innerHTML = ["❤️", "💖", "💗", "💕"][Math.floor(Math.random()*4)];
+                h.style.left = Math.random() * 100 + "vw";
+                h.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 5000);
+            }, 400);
         }
     </script>
 </body>
