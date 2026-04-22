@@ -3,213 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hassan & Hana</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <title>عالمكِ الخاص | Princess Realm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Amiri:ital@1&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff0050;
-            --glass: rgba(0, 0, 0, 0.7);
-            --border-color: rgba(255, 255, 255, 0.2);
+            --accent: #ff85a1;
+            --gold: #d4af37;
         }
 
-        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
         body {
             margin: 0;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                        url('https://i.ibb.co/qYZb6KZS/image.jpg');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            color: white; overflow-x: hidden;
+            font-family: 'Cairo', sans-serif;
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
         }
 
-        #lock-screen {
-            position: fixed; inset: 0; 
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                        url('https://i.ibb.co/qYZb6KZS/image.jpg');
-            background-size: cover; z-index: 10000; display: flex; justify-content: center; align-items: center;
-            transition: transform 0.8s ease-in-out;
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=1976&auto=format&fit=crop') center/cover no-repeat;
         }
 
-        .lock-card {
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 40px; border-radius: 35px; text-align: center; width: 85%; max-width: 380px;
-            border: 1px solid var(--border-color);
+        .login-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            padding: 3rem 2rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.15);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
         }
 
-        #main-app { display: none; max-width: 600px; margin: 0 auto; padding: 20px; }
-
-        .memory-card {
-            background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border-radius: 30px; margin-bottom: 30px; border: 1px solid var(--border-color);
-            overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .input-pw {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--accent);
+            padding: 15px;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            width: 100%;
+            margin: 25px 0;
+            outline: none;
+            font-size: 1.2rem;
         }
 
-        .media-stack { display: flex; flex-direction: column; gap: 2px; background: #000; }
-        .media-stack img, .media-stack video { width: 100%; display: block; max-height: 70vh; object-fit: contain; }
-
-        .memory-body { padding: 20px; }
-        .date-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 10px; font-size: 12px; font-weight: bold; }
-        
-        .music-bar {
-            background: linear-gradient(90deg, #ff0050 0%, #ff5e62 100%);
-            padding: 15px 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; cursor: pointer;
+        .dynamic-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            transition: background 5s ease-in-out;
         }
-        .play-btn { background: white; color: var(--primary); width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 18px; display: flex; align-items: center; justify-content: center; }
 
-        .header-card { background: var(--glass); padding: 25px; border-radius: 25px; text-align: center; margin-bottom: 20px; }
-        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
-        .timer-box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 15px; border: 1px solid var(--primary); }
-        .timer-box span { display: block; font-size: 18px; font-weight: bold; }
+        .night-bg { background: radial-gradient(circle at bottom left, #1a2a6c, #b21f1f, #fdbb2d); }
+
+        .photo-card {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .photo-card.revealed img { opacity: 1; }
+
+        .gift-container {
+            position: relative;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed var(--gold);
+            border-radius: 35px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .gift-box-visual {
+            font-size: 6rem;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            user-select: none;
+        }
+
+        .gift-box-visual:active {
+            transform: scale(0.8);
+        }
+
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            animation: flyUp 1.5s ease-out forwards;
+        }
+
+        @keyframes flyUp {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="lock-screen">
-        <div class="lock-card">
-            <span style="font-size: 50px;">🔐</span>
-            <h2>Hassan & Hana</h2>
-            <p>تاريخ يوم حبنا</p>
-            <input type="text" id="pinCode" placeholder="افتكري يا ست البنات.." 
-                   style="text-align: center; width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; outline: none;"
-                   onkeypress="handleKeyPress(event)">
-            <button onclick="unlock()" style="width: 100%; padding: 15px; background: var(--primary); border: none; color: white; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px;">دخول</button>
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="text-6xl mb-6">👑</div>
+            <h1 class="text-2xl font-bold mb-2">مملكتكِ بانتظاركِ</h1>
+            <input type="password" id="password" class="input-pw" placeholder="كلمة السر">
+            <button onclick="checkPassword()" class="w-full py-4 rounded-2xl font-bold bg-pink-500 text-white shadow-xl">دخول</button>
         </div>
     </div>
 
-    <div id="main-app">
-        <div class="header-card">
-            <h1 style="margin:0">❤️ Hassan & Hana</h1>
-            <div class="timer-grid">
-                <div class="timer-box"><span id="d">0</span><label>يوم</label></div>
-                <div class="timer-box"><span id="h">0</span><label>ساعة</label></div>
-                <div class="timer-box"><span id="m">0</span><label>دقيقة</label></div>
-                <div class="timer-box"><span id="s">0</span><label>ثانية</label></div>
+    <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000 pb-20">
+        <div class="dynamic-bg night-bg"></div>
+        
+        <main class="max-w-md mx-auto pt-16 px-6 space-y-12 relative z-10">
+            
+            <div class="text-center">
+                <h1 class="serif-text text-4xl italic">أهلاً يا أميرتي</h1>
+                <p class="text-[10px] opacity-60 mt-2 tracking-[0.3em]">عالم صُنع خصيصاً لكِ</p>
             </div>
-        </div>
 
-        <div class="music-bar" onclick="togglePlay()">
-            <button class="play-btn" id="playIcon">▶</button>
-            <div style="flex-grow:1">
-                <div style="font-weight: bold; font-size: 14px;">أغنيتنا المفضلة 🎵</div>
+            <div class="text-center bg-white/5 p-8 rounded-[40px] border border-white/20 shadow-xl">
+                <h2 class="text-[9px] tracking-[0.4em] uppercase text-pink-400 mb-6 font-bold">عمر حبنا</h2>
+                <div id="counter" class="grid grid-cols-4 gap-4 text-2xl font-light">
+                    <div class="flex flex-col"><span id="days" class="font-bold">0</span><span class="text-[9px] opacity-60">يوم</span></div>
+                    <div class="flex flex-col"><span id="hours" class="font-bold">0</span><span class="text-[9px] opacity-60">ساعة</span></div>
+                    <div class="flex flex-col"><span id="minutes" class="font-bold">0</span><span class="text-[9px] opacity-60">دقيقة</span></div>
+                    <div class="flex flex-col"><span id="seconds" class="font-bold">0</span><span class="text-[9px] opacity-60 text-pink-500">ثانية</span></div>
+                </div>
             </div>
-            <audio id="audioTrack" loop>
-                <source src="https://c.top4top.io/m_36695s4h40.mp3" type="audio/mpeg">
-            </audio>
-        </div>
 
-        <div id="feed"></div>
+            <div class="gift-container">
+                <p class="text-[10px] uppercase tracking-widest text-pink-400 mb-6 font-bold">اضغطي هنا لترسل لي رسالة</p>
+                <div class="gift-box-visual" id="giftBox" onclick="triggerLoveAction(event)">🎁</div>
+                <p id="status-msg" class="text-xs opacity-50 mt-4 italic">سأعرف فوراً أنكِ هنا ✨</p>
+            </div>
+
+        </main>
     </div>
 
     <script>
-        const audio = document.getElementById('audioTrack');
-        const startPoint = new Date("January 18, 2025 00:00:00").getTime();
+        const PASSWORD = "حبنا"; 
+        const LOVE_START = new Date('2023-01-01T00:00:00'); 
+        const PHONE_NUMBER = "201146955449"; 
 
-        // مصفوفة الذكريات
-        let memories = [
-            {
-                id: 4,
-                title: " احلي ايام ",
-                date: "2025-01-18",
-                desc: "گنت عاوزة اقولك بمناسبة أننا كملنا سنة مع بعض ويارب العمر كلو كل سنة وأنتى منوره حياتي ودنيتي وكل سنة وأنتى حبيبتي سنة عدت معاكى بحلوها ومرها وسنة هبتديها بيكى ويارب طول العمر وإنشاء الله مش اخر سنة لينا مع بعض وهنفضل مكملين لو الدنيا كلها وقعت أنا وأنتى هنفضل مكملين مع بعض وماسكين في أيد بعض حبيتك وحبيت ضحكتك اللي منورة حياتي ودنيتي بحبك وهفضل احبك العمر كلو لحد ما يجي الوقت اللي يبقي في الحب دا قدام الناس كلها أنتى هدية من ربنا بعتهالي هفضل محافظة عليها عمري كلو ومش هخلي حد يخدك مني وأنتى اللي عرفت معاها معني الحب ومعني الاهتمام ومعني الثقة وكل حاجة بجد أنتى بنتى واختى وصحبتى وحبيبتي ودنيتي واهلي وناسي وسندي وضهري نورة عيني من جوا كل سنة وأحنا بينا خناقات كتير ونكد كتير عاوزة أقولك أنك احسن وحده انا عرفتها ومتأكد أنك بتحبني ولازم تبقي عارف أنا بحبك قد أي أنا نفسي أشوفك احسن واحد في الدنيا كلها أنا بتباها بيكى بحبك وبحب رخامتك وبحب نكدك عليا والمقالب اللي بتعمليها فيا كتير بس في الاخر ماليش حد غيرك يابت هنفضل مع بعض العمر كلو وهنفضل قد وعدنا لبعض وأنا وعد مني هفضل علي قلبك ومربع كمان عايز أقولك أنا بحبك اووي فوق ما تتخيلى وهفضل احبك لحد ما اموت معرفتش الحب غير وانا معاك معرفتش يعني اي أخاف على حد ويبقي جزء من حياتي ونصي الثاني غير وأنا جمبك اتمنيت من ربنا بت أحبها ويتشيلني في عينيها وربنا استجاب مني وبعتك ليااا هفضل علي قد وعدي معاكى لأنك أمنية اتمنيتها والحمد لله لقيتك ف معنديش استعداد اخسرك ربنا يخليك ليا وميحرمنيش منك يارب ويجعلك من نصيبي ويجمعنا في بيت واحد يا كتكوتيي♥️♥️♥️♥️♥️♥️♥️😍",
-                links: ["https://l.top4top.io/m_3669d3gml0.mp4"]
-            },
-            {
-                id: 3,
-                title: " احلي خروجه",
-                date: "2025-01-18",
-                desc: "يومي مبعدين فير بيكي ي ست البنات",
-                links: ["https://l.top4top.io/m_366936j3m1.mp4"]
-            },
-            {
-                id: 2,
-                title: "اجمل لحظه",
-                date: "2025-01-18",
-                desc: "هنا كنت مكسوف وانتي كنتي قمر..",
-                links: ["https://k.top4top.io/m_36697ebvg0.mp4"]
-            },
-            {
-                id: 1,
-                title: "بداية حكايتنا",
-                date: "2025-01-18",
-                desc: "أجمل يوم في حياتي",
-                links: ["https://c.top4top.io/p_36694wtj20.jpg"]
-            }
-        ];
-
-        function handleKeyPress(event) {
-            if (event.key === "Enter") {
-                unlock();
+        function checkPassword() {
+            const val = document.getElementById('password').value;
+            if (val === PASSWORD) {
+                document.getElementById('login-screen').style.display = 'none';
+                const mc = document.getElementById('main-content');
+                mc.classList.remove('hidden');
+                setTimeout(() => mc.style.opacity = '1', 50);
+                initApp();
+            } else {
+                alert("كلمة السر خطأ");
             }
         }
 
-        function unlock() {
-            const inputField = document.getElementById('pinCode');
-            const code = inputField.value.trim();
+        function initApp() {
+            setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const diff = new Date() - LOVE_START;
+            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            document.getElementById('minutes').innerText = Math.floor((diff / (1000 * 60)) % 60);
+            document.getElementById('seconds').innerText = Math.floor((diff / 1000) % 60);
+        }
+
+        function triggerLoveAction(e) {
+            // 1. تأثير القلوب المتفجرة
+            for(let i=0; i<15; i++) {
+                createHeart(e.clientX, e.clientY);
+            }
+
+            // 2. تجهيز الرسالة
+            const message = "يا حبيبي أنا فتحت الموقع دلوقتي وشفت المفاجأة.. بجد تجنن زيك! بحبك أوي 💖✨";
+            const encoded = encodeURIComponent(message);
             
-            if(code === "20/1" || code === "٢٠/١") {
-                // تشغيل الأغنية فور الضغط على الزر بنجاح
-                audio.play().then(() => {
-                    document.getElementById('playIcon').innerText = "⏸";
-                }).catch(e => console.log("Audio play blocked by browser"));
+            // 3. التحويل للواتساب (تم استخدام api.whatsapp لضمان ظهور الرسالة)
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encoded}`;
+            
+            document.getElementById('status-msg').innerText = "جاري فتح الواتساب...";
 
-                document.getElementById('lock-screen').style.transform = "translateY(-100%)";
-                setTimeout(() => {
-                    document.getElementById('lock-screen').style.display = 'none';
-                    document.getElementById('main-app').style.display = 'block';
-                    startTimer();
-                    renderMemories();
-                }, 800);
-            } else { 
-                alert("التاريخ خطأ! جربي مرة ثانية");
-                inputField.value = "";
-            }
+            // تأخير بسيط ليرى المستخدم تأثير القلوب ثم التحويل
+            setTimeout(() => {
+                window.location.href = whatsappUrl;
+            }, 600);
         }
 
-        function togglePlay() {
-            if(audio.paused) { 
-                audio.play(); 
-                document.getElementById('playIcon').innerText = "⏸"; 
-            } else { 
-                audio.pause(); 
-                document.getElementById('playIcon').innerText = "▶"; 
-            }
-        }
-
-        function isVideo(url) {
-            return url.toLowerCase().match(/\.(mp4|webm|ogg|mov|m4v)$/) != null;
-        }
-
-        function renderMemories() {
-            const feed = document.getElementById('feed');
-            feed.innerHTML = memories.map(m => {
-                const mediaHtml = m.links.map(link => {
-                    return isVideo(link) 
-                        ? `<video src="${link}" controls playsinline preload="metadata"></video>` 
-                        : `<img src="${link}" loading="lazy">`;
-                }).join('');
-
-                return `
-                <div class="memory-card">
-                    <div class="media-stack">${mediaHtml}</div>
-                    <div class="memory-body">
-                        <span class="date-badge">${m.date}</span>
-                        <h3 style="margin:15px 0 10px 0">${m.title}</h3>
-                        <p style="margin:0; opacity:0.8; line-height:1.6">${m.desc}</p>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        function startTimer() {
-            function update() {
-                const diff = new Date().getTime() - startPoint;
-                document.getElementById('d').innerText = Math.floor(diff / 86400000);
-                document.getElementById('h').innerText = Math.floor((diff % 86400000) / 3600000);
-                document.getElementById('m').innerText = Math.floor((diff % 3600000) / 60000);
-                document.getElementById('s').innerText = Math.floor((diff % 60000) / 1000);
-            }
-            update();
-            setInterval(update, 1000);
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart-particle';
+            heart.innerHTML = '❤️';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            heart.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+            heart.style.setProperty('--ty', (Math.random() - 0.5) * 300 - 150 + 'px');
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1500);
         }
     </script>
 </body>
