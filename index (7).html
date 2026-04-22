@@ -1,222 +1,181 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>عالمكِ الخاص | Princess Realm</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Amiri:ital@1&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #ff85a1;
-            --gold: #d4af37;
+import React, { useState, useEffect, useRef } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
+import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from 'firebase/firestore';
+
+const firebaseConfig = JSON.parse(__firebase_config);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'princess-app';
+
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [view, setView] = useState('user'); 
+  const [receivedMessages, setReceivedMessages] = useState([]);
+  const [showHeart, setShowHeart] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const lastMsgCount = useRef(0);
+
+  // 1. الدخول الصامت
+  useEffect(() => {
+    const initAuth = async () => {
+      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+        await signInWithCustomToken(auth, __initial_auth_token);
+      } else {
+        await signInAnonymously(auth);
+      }
+    };
+    initAuth();
+    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
+    return () => unsubscribe();
+  }, []);
+
+  // 2. نظام التنبيهات لك (الأمير)
+  useEffect(() => {
+    if (!user || view !== 'admin') return;
+    
+    const q = collection(db, 'artifacts', appId, 'public', 'data', 'messages');
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const msgs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const sortedMsgs = msgs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+      
+      // إطلاق إشعار حقيقي في المتصفح عند وصول رسالة جديدة
+      if (lastMsgCount.current > 0 && sortedMsgs.length > lastMsgCount.current) {
+        const latest = sortedMsgs[0];
+        if (Notification.permission === "granted") {
+          new Notification("رسالة جديدة من أميرتك 👑", {
+            body: latest.text,
+            icon: "https://cdn-icons-png.flaticon.com/512/1077/1077035.png"
+          });
         }
+      }
+      lastMsgCount.current = sortedMsgs.length;
+      setReceivedMessages(sortedMsgs);
+    });
+    return () => unsubscribe();
+  }, [user, view]);
 
-        body {
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            background-color: #050505;
-            color: white;
-            overflow-x: hidden;
-        }
+  const requestNotificationPermission = () => {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        alert("تم تفعيل التنبيهات! ستصلك رسائلها كإشعارات من كروم");
+      }
+    });
+  };
 
-        #login-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=1976&auto=format&fit=crop') center/cover no-repeat;
-        }
+  const handleLogin = () => {
+    if (password === "حبنا") {
+      setIsLoggedIn(true);
+      setView('user');
+    } else if (password === "admin123") {
+      setIsLoggedIn(true);
+      setView('admin');
+    } else {
+      alert("كلمة السر خطأ");
+    }
+  };
 
-        .login-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(30px);
-            padding: 3rem 2rem;
-            border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.15);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
+  const sendMessage = async (text) => {
+    if (!user) return;
+    try {
+      await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'messages'), {
+        text,
+        timestamp: serverTimestamp()
+      });
+      setShowConfirmation(true);
+      setTimeout(() => setShowConfirmation(false), 3000);
+    } catch (e) { console.error(e); }
+  };
 
-        .input-pw {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid var(--accent);
-            padding: 15px;
-            border-radius: 20px;
-            color: white;
-            text-align: center;
-            width: 100%;
-            margin: 25px 0;
-            outline: none;
-            font-size: 1.2rem;
-        }
-
-        .dynamic-bg {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            transition: background 5s ease-in-out;
-        }
-
-        .night-bg { background: radial-gradient(circle at bottom left, #1a2a6c, #b21f1f, #fdbb2d); }
-
-        .option-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 20px;
-            border-radius: 15px;
-            text-align: right;
-            width: 100%;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-        }
-
-        .option-btn:hover {
-            background: rgba(255, 133, 161, 0.2);
-            border-color: var(--accent);
-            transform: translateX(-5px);
-        }
-
-        .heart-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 999;
-            animation: flyUp 1.5s ease-out forwards;
-        }
-
-        @keyframes flyUp {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
-        .hidden { display: none; }
-    </style>
-</head>
-<body>
-
-    <div id="login-screen">
-        <div class="login-card">
-            <div class="text-6xl mb-6">👑</div>
-            <h1 class="text-2xl font-bold mb-2">مملكتكِ بانتظاركِ</h1>
-            <input type="password" id="password" class="input-pw" placeholder="كلمة السر">
-            <button onclick="checkPassword()" class="w-full py-4 rounded-2xl font-bold bg-pink-500 text-white shadow-xl">دخول</button>
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 text-white text-right" dir="rtl">
+        <div className="bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 w-full max-w-sm text-center">
+          <div className="text-5xl mb-4">✨</div>
+          <h1 className="text-xl font-bold mb-6">مملكتكِ الخاصة</h1>
+          <input 
+            type="password" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full bg-white/10 border border-white/20 p-4 rounded-xl text-center mb-4 outline-none focus:border-rose-500"
+            placeholder="كلمة السر"
+          />
+          <button onClick={handleLogin} className="w-full py-4 bg-rose-600 rounded-xl font-bold">دخول</button>
         </div>
+      </div>
+    );
+  }
+
+  // لوحة تحكمك أنت
+  if (view === 'admin') {
+    return (
+      <div className="min-h-screen bg-black text-white p-6 text-right" dir="rtl">
+        <div className="max-w-md mx-auto">
+          <button onClick={requestNotificationPermission} className="w-full mb-6 py-3 bg-blue-600 rounded-xl text-sm font-bold">
+            تفعيل تنبيهات كروم 🔔
+          </button>
+          <div className="space-y-4">
+            {receivedMessages.map((m) => (
+              <div key={m.id} className="bg-zinc-900 p-4 rounded-xl border-l-4 border-rose-500">
+                <p className="text-lg">{m.text}</p>
+                <p className="text-[10px] opacity-40 mt-1">
+                   {m.timestamp?.toDate ? m.timestamp.toDate().toLocaleString('ar-EG') : 'الآن'}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // واجهة الأميرة
+  return (
+    <div className="min-h-screen bg-black text-white relative overflow-hidden text-right" dir="rtl">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-rose-900/20 via-transparent to-transparent" />
+      
+      <main className="relative z-10 max-w-md mx-auto pt-20 px-6">
+        <header className="text-center mb-16">
+          <h1 className="text-3xl font-light tracking-widest mb-2">أَمِيرَتِي</h1>
+          <div className="h-px w-20 bg-rose-500 mx-auto opacity-50" />
+        </header>
+
+        <div className="grid gap-4">
+          {[
+            "وحشتني أوي 💖",
+            "بحبك يا أغلى حاجة ❤️",
+            "محتاجة أشوفك دلوقتي 🫂",
+            "تعالى نخرج سوا ✨"
+          ].map((txt, i) => (
+            <button 
+              key={i}
+              onClick={(e) => {
+                setShowHeart({ x: e.clientX, y: e.clientY });
+                sendMessage(txt);
+              }}
+              className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-right hover:bg-rose-500/10 transition-all active:scale-95"
+            >
+              {txt}
+            </button>
+          ))}
+        </div>
+
+        {showConfirmation && (
+          <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-rose-600 px-8 py-3 rounded-full text-sm font-bold shadow-2xl animate-fade-in">
+            تم الإرسال لقلبه بنجاح 💌
+          </div>
+        )}
+      </main>
+
+      {showHeart && (
+        <div 
+          className="fixed pointer-events-none text-4xl animate-ping z-50"
+          style={{ left: showHeart.x - 20, top: showHeart.y - 20 }}
+        >❤️</div>
+      )}
     </div>
-
-    <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000 pb-20">
-        <div class="dynamic-bg night-bg"></div>
-        
-        <main class="max-w-md mx-auto pt-16 px-6 space-y-12 relative z-10">
-            
-            <div class="text-center">
-                <h1 class="serif-text text-4xl italic">أهلاً يا أميرتي</h1>
-                <p class="text-[10px] opacity-60 mt-2 tracking-[0.3em]">عالم صُنع خصيصاً لكِ</p>
-            </div>
-
-            <div class="text-center bg-white/5 p-8 rounded-[40px] border border-white/20 shadow-xl">
-                <h2 class="text-[9px] tracking-[0.4em] uppercase text-pink-400 mb-6 font-bold">عمر حبنا</h2>
-                <div id="counter" class="grid grid-cols-4 gap-4 text-2xl font-light">
-                    <div class="flex flex-col"><span id="days" class="font-bold">0</span><span class="text-[9px] opacity-60">يوم</span></div>
-                    <div class="flex flex-col"><span id="hours" class="font-bold">0</span><span class="text-[9px] opacity-60">ساعة</span></div>
-                    <div class="flex flex-col"><span id="minutes" class="font-bold">0</span><span class="text-[9px] opacity-60">دقيقة</span></div>
-                    <div class="flex flex-col"><span id="seconds" class="font-bold">0</span><span class="text-[9px] opacity-60 text-pink-500">ثانية</span></div>
-                </div>
-            </div>
-
-            <!-- قائمة الخيارات الجديدة -->
-            <div class="space-y-4">
-                <p class="text-[10px] uppercase tracking-widest text-pink-400 text-center mb-4 font-bold">ماذا يدور في خاطركِ الآن؟</p>
-                
-                <button class="option-btn" onclick="triggerLoveAction(event, 'وحشتني أوي وعاوزة أشوفك 💖')">
-                    <span class="text-2xl">👀</span>
-                    <span>وحشتني أوي وعاوزة أشوفك</span>
-                </button>
-
-                <button class="option-btn" onclick="triggerLoveAction(event, 'بحبك أوي يا أحلى حاجة في حياتي 💍')">
-                    <span class="text-2xl">❤️</span>
-                    <span>كلمة حب سريعة</span>
-                </button>
-
-                <button class="option-btn" onclick="triggerLoveAction(event, 'محتاجة حضن دافي منك دلوقتي 🫂')">
-                    <span class="text-2xl">🫂</span>
-                    <span>أنا محتاجة حضن</span>
-                </button>
-
-                <button class="option-btn" onclick="triggerLoveAction(event, 'ممكن نخرج النهاردة؟ 💃')">
-                    <span class="text-2xl">✨</span>
-                    <span>نفسي نخرج النهاردة</span>
-                </button>
-            </div>
-
-            <p id="status-msg" class="text-xs text-center opacity-50 mt-4 italic">اختاري وسأصل إليكِ فوراً ✨</p>
-
-        </main>
-    </div>
-
-    <script>
-        const PASSWORD = "حبنا"; 
-        const LOVE_START = new Date('2023-01-01T00:00:00'); 
-        const PHONE_NUMBER = "201146955449"; 
-
-        function checkPassword() {
-            const val = document.getElementById('password').value;
-            if (val === PASSWORD) {
-                document.getElementById('login-screen').style.display = 'none';
-                const mc = document.getElementById('main-content');
-                mc.classList.remove('hidden');
-                setTimeout(() => mc.style.opacity = '1', 50);
-                initApp();
-            } else {
-                alert("كلمة السر خطأ");
-            }
-        }
-
-        function initApp() {
-            setInterval(updateTimer, 1000);
-        }
-
-        function updateTimer() {
-            const diff = new Date() - LOVE_START;
-            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            document.getElementById('minutes').innerText = Math.floor((diff / (1000 * 60)) % 60);
-            document.getElementById('seconds').innerText = Math.floor((diff / 1000) % 60);
-        }
-
-        function triggerLoveAction(e, message) {
-            // 1. تأثير القلوب المتفجرة في مكان الضغطة
-            for(let i=0; i<15; i++) {
-                createHeart(e.clientX, e.clientY);
-            }
-
-            // 2. التحويل للواتساب مع الرسالة المختارة
-            const encoded = encodeURIComponent(message);
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encoded}`;
-            
-            document.getElementById('status-msg').innerText = "جاري إيصال مشاعرك...";
-
-            setTimeout(() => {
-                window.location.href = whatsappUrl;
-            }, 600);
-        }
-
-        function createHeart(x, y) {
-            const heart = document.createElement('div');
-            heart.className = 'heart-particle';
-            heart.innerHTML = '❤️';
-            heart.style.left = x + 'px';
-            heart.style.top = y + 'px';
-            heart.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
-            heart.style.setProperty('--ty', (Math.random() - 0.5) * 300 - 150 + 'px');
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 1500);
-        }
-    </script>
-</body>
-</html>
+  );
+}
