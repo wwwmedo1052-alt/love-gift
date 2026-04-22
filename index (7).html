@@ -149,7 +149,7 @@
 </head>
 <body>
 
-    <!-- ملف الصوت: يجب أن يكون ملف باسم welcome.mp3 في نفس المجلد -->
+    <!-- ملف الصوت: سجل صوتك وسمه welcome.mp3 وضعه في نفس المجلد -->
     <audio id="welcome-voice">
         <source src="welcome.mp3" type="audio/mpeg">
     </audio>
@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    <!-- المحتوى -->
+    <!-- المحتوى الرئيسي -->
     <div id="main-content">
         <div class="counter-card">
             <h2 style="margin-top:0;">إحنا مع بعض بقالنا:</h2>
@@ -199,17 +199,17 @@
             <h3>اضغطي على الهدية 🎁</h3>
             <div class="gift-box" onclick="openGift()">🎁</div>
             <div id="gift-status" style="margin-top:10px; color: #666;">مفاجأة في انتظارك!</div>
-            <div id="gift-msg" class="hidden-msg">الهدية هي: (اكتب هنا مفاجأتك) ❤️</div>
+            <div id="gift-msg" class="hidden-msg">الهدية هي: (اكتب هنا مفاجأتك أو كلمة حلوة) ❤️</div>
         </section>
     </div>
 
     <script>
-        // --- الإعدادات ---
-        const CORRECT_PASS = "1234"; 
-        const START_DATE = new Date("October 10, 2023 00:00:00").getTime(); 
-        const WHATSAPP_PHONE = "201114689409"; 
-        const CALLMEBOT_API_KEY = "ضع_الكود_الذي_وصلك_هنا"; // ضع هنا الـ apikey اللي جالك من البوت
-        // ----------------
+        // --- الإعدادات الخاصة بك ---
+        const CORRECT_PASS = "1234"; // كلمة سر الدخول
+        const START_DATE = new Date("October 10, 2023 00:00:00").getTime(); // تاريخ البداية
+        const WHATSAPP_PHONE = "201114689409"; // رقمك
+        const CALLMEBOT_API_KEY = "ضع_كود_الـapikey_هنا"; // ضع الكود اللي جالك من البوت هنا
+        // ---------------------------
 
         function checkPass() {
             const input = document.getElementById('pass-input').value;
@@ -219,9 +219,9 @@
                     document.getElementById('login-overlay').style.display = 'none';
                     document.getElementById('main-content').style.display = 'block';
                     
-                    // محاولة تشغيل الصوت (نورتي يا قطتي)
+                    // تشغيل الصوت (نورتي يا قطتي)
                     const audio = document.getElementById('welcome-voice');
-                    audio.play().catch(e => console.log("الصوت بانتظار تفاعل"));
+                    audio.play().catch(e => console.log("الصوت يحتاج تفاعل"));
                     
                     setDayBackground();
                     startCounter();
@@ -253,197 +253,19 @@
         }
 
         function openGift() {
-            // تفتح الآن مباشرة بدون شروط وقت
+            // إظهار المفاجأة فوراً
             document.getElementById('gift-msg').style.display = 'block';
             document.querySelector('.gift-box').innerHTML = '💖';
             document.getElementById('gift-status').innerText = "تم إرسال إشعار لصاحب الهدية! 😉";
 
-            // إرسال رسالة واتساب لك
-            const msg = encodeURIComponent("قطتك فتحت الهدية دلوقتي حالا! 🎁✨");
-            const url = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_PHONE}&text=${msg}&apikey=${CALLMEBOT_API_KEY}`;
+            // إرسال رسالة واتساب لك في الخلفية
+            const message = encodeURIComponent("انا فتحت الهديه وحلوه زيك");
+            const url = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_PHONE}&text=${message}&apikey=${CALLMEBOT_API_KEY}`;
             
-            fetch(url, { mode: 'no-cors' });
+            fetch(url, { mode: 'no-cors' })
+            .then(() => console.log("Message Sent"))
+            .catch(err => console.log("Error"));
         }
     </script>
 </body>
-</html>import React, { useState, useEffect, useRef } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
-import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from 'firebase/firestore';
-
-const firebaseConfig = JSON.parse(__firebase_config);
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'princess-app';
-
-export default function App() {
-  const [user, setUser] = useState(null);
-  const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [view, setView] = useState('user'); 
-  const [receivedMessages, setReceivedMessages] = useState([]);
-  const [showHeart, setShowHeart] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const lastMsgCount = useRef(0);
-
-  // 1. الدخول الصامت
-  useEffect(() => {
-    const initAuth = async () => {
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
-      }
-    };
-    initAuth();
-    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
-    return () => unsubscribe();
-  }, []);
-
-  // 2. نظام التنبيهات لك (الأمير)
-  useEffect(() => {
-    if (!user || view !== 'admin') return;
-    
-    const q = collection(db, 'artifacts', appId, 'public', 'data', 'messages');
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const msgs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      const sortedMsgs = msgs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-      
-      // إطلاق إشعار حقيقي في المتصفح عند وصول رسالة جديدة
-      if (lastMsgCount.current > 0 && sortedMsgs.length > lastMsgCount.current) {
-        const latest = sortedMsgs[0];
-        if (Notification.permission === "granted") {
-          new Notification("رسالة جديدة من أميرتك 👑", {
-            body: latest.text,
-            icon: "https://cdn-icons-png.flaticon.com/512/1077/1077035.png"
-          });
-        }
-      }
-      lastMsgCount.current = sortedMsgs.length;
-      setReceivedMessages(sortedMsgs);
-    });
-    return () => unsubscribe();
-  }, [user, view]);
-
-  const requestNotificationPermission = () => {
-    Notification.requestPermission().then(permission => {
-      if (permission === "granted") {
-        alert("تم تفعيل التنبيهات! ستصلك رسائلها كإشعارات من كروم");
-      }
-    });
-  };
-
-  const handleLogin = () => {
-    if (password === "حبنا") {
-      setIsLoggedIn(true);
-      setView('user');
-    } else if (password === "admin123") {
-      setIsLoggedIn(true);
-      setView('admin');
-    } else {
-      alert("كلمة السر خطأ");
-    }
-  };
-
-  const sendMessage = async (text) => {
-    if (!user) return;
-    try {
-      await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'messages'), {
-        text,
-        timestamp: serverTimestamp()
-      });
-      setShowConfirmation(true);
-      setTimeout(() => setShowConfirmation(false), 3000);
-    } catch (e) { console.error(e); }
-  };
-
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 text-white text-right" dir="rtl">
-        <div className="bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 w-full max-w-sm text-center">
-          <div className="text-5xl mb-4">✨</div>
-          <h1 className="text-xl font-bold mb-6">مملكتكِ الخاصة</h1>
-          <input 
-            type="password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-white/10 border border-white/20 p-4 rounded-xl text-center mb-4 outline-none focus:border-rose-500"
-            placeholder="كلمة السر"
-          />
-          <button onClick={handleLogin} className="w-full py-4 bg-rose-600 rounded-xl font-bold">دخول</button>
-        </div>
-      </div>
-    );
-  }
-
-  // لوحة تحكمك أنت
-  if (view === 'admin') {
-    return (
-      <div className="min-h-screen bg-black text-white p-6 text-right" dir="rtl">
-        <div className="max-w-md mx-auto">
-          <button onClick={requestNotificationPermission} className="w-full mb-6 py-3 bg-blue-600 rounded-xl text-sm font-bold">
-            تفعيل تنبيهات كروم 🔔
-          </button>
-          <div className="space-y-4">
-            {receivedMessages.map((m) => (
-              <div key={m.id} className="bg-zinc-900 p-4 rounded-xl border-l-4 border-rose-500">
-                <p className="text-lg">{m.text}</p>
-                <p className="text-[10px] opacity-40 mt-1">
-                   {m.timestamp?.toDate ? m.timestamp.toDate().toLocaleString('ar-EG') : 'الآن'}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // واجهة الأميرة
-  return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden text-right" dir="rtl">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-rose-900/20 via-transparent to-transparent" />
-      
-      <main className="relative z-10 max-w-md mx-auto pt-20 px-6">
-        <header className="text-center mb-16">
-          <h1 className="text-3xl font-light tracking-widest mb-2">أَمِيرَتِي</h1>
-          <div className="h-px w-20 bg-rose-500 mx-auto opacity-50" />
-        </header>
-
-        <div className="grid gap-4">
-          {[
-            "وحشتني أوي 💖",
-            "بحبك يا أغلى حاجة ❤️",
-            "محتاجة أشوفك دلوقتي 🫂",
-            "تعالى نخرج سوا ✨"
-          ].map((txt, i) => (
-            <button 
-              key={i}
-              onClick={(e) => {
-                setShowHeart({ x: e.clientX, y: e.clientY });
-                sendMessage(txt);
-              }}
-              className="w-full p-5 bg-white/5 border border-white/10 rounded-2xl text-right hover:bg-rose-500/10 transition-all active:scale-95"
-            >
-              {txt}
-            </button>
-          ))}
-        </div>
-
-        {showConfirmation && (
-          <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-rose-600 px-8 py-3 rounded-full text-sm font-bold shadow-2xl animate-fade-in">
-            تم الإرسال لقلبه بنجاح 💌
-          </div>
-        )}
-      </main>
-
-      {showHeart && (
-        <div 
-          className="fixed pointer-events-none text-4xl animate-ping z-50"
-          style={{ left: showHeart.x - 20, top: showHeart.y - 20 }}
-        >❤️</div>
-      )}
-    </div>
-  );
-}
+</html>
