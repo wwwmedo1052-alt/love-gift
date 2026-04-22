@@ -63,50 +63,24 @@
 
         .night-bg { background: radial-gradient(circle at bottom left, #1a2a6c, #b21f1f, #fdbb2d); }
 
-        .photo-card {
-            aspect-ratio: 1;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
+        .option-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 15px;
+            text-align: right;
+            width: 100%;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .photo-card.revealed img { opacity: 1; }
-
-        .gift-container {
-            position: relative;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px dashed var(--gold);
-            border-radius: 35px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .gift-box-visual {
-            font-size: 6rem;
+            gap: 12px;
             cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
-            user-select: none;
         }
 
-        .gift-box-visual:active {
-            transform: scale(0.8);
+        .option-btn:hover {
+            background: rgba(255, 133, 161, 0.2);
+            border-color: var(--accent);
+            transform: translateX(-5px);
         }
 
         .heart-particle {
@@ -155,11 +129,32 @@
                 </div>
             </div>
 
-            <div class="gift-container">
-                <p class="text-[10px] uppercase tracking-widest text-pink-400 mb-6 font-bold">اضغطي هنا لترسل لي رسالة</p>
-                <div class="gift-box-visual" id="giftBox" onclick="triggerLoveAction(event)">🎁</div>
-                <p id="status-msg" class="text-xs opacity-50 mt-4 italic">سأعرف فوراً أنكِ هنا ✨</p>
+            <!-- قائمة الخيارات الجديدة -->
+            <div class="space-y-4">
+                <p class="text-[10px] uppercase tracking-widest text-pink-400 text-center mb-4 font-bold">ماذا يدور في خاطركِ الآن؟</p>
+                
+                <button class="option-btn" onclick="triggerLoveAction(event, 'وحشتني أوي وعاوزة أشوفك 💖')">
+                    <span class="text-2xl">👀</span>
+                    <span>وحشتني أوي وعاوزة أشوفك</span>
+                </button>
+
+                <button class="option-btn" onclick="triggerLoveAction(event, 'بحبك أوي يا أحلى حاجة في حياتي 💍')">
+                    <span class="text-2xl">❤️</span>
+                    <span>كلمة حب سريعة</span>
+                </button>
+
+                <button class="option-btn" onclick="triggerLoveAction(event, 'محتاجة حضن دافي منك دلوقتي 🫂')">
+                    <span class="text-2xl">🫂</span>
+                    <span>أنا محتاجة حضن</span>
+                </button>
+
+                <button class="option-btn" onclick="triggerLoveAction(event, 'ممكن نخرج النهاردة؟ 💃')">
+                    <span class="text-2xl">✨</span>
+                    <span>نفسي نخرج النهاردة</span>
+                </button>
             </div>
+
+            <p id="status-msg" class="text-xs text-center opacity-50 mt-4 italic">اختاري وسأصل إليكِ فوراً ✨</p>
 
         </main>
     </div>
@@ -194,22 +189,18 @@
             document.getElementById('seconds').innerText = Math.floor((diff / 1000) % 60);
         }
 
-        function triggerLoveAction(e) {
-            // 1. تأثير القلوب المتفجرة
+        function triggerLoveAction(e, message) {
+            // 1. تأثير القلوب المتفجرة في مكان الضغطة
             for(let i=0; i<15; i++) {
                 createHeart(e.clientX, e.clientY);
             }
 
-            // 2. تجهيز الرسالة
-            const message = "يا حبيبي أنا فتحت الموقع دلوقتي وشفت المفاجأة.. بجد تجنن زيك! بحبك أوي 💖✨";
+            // 2. التحويل للواتساب مع الرسالة المختارة
             const encoded = encodeURIComponent(message);
-            
-            // 3. التحويل للواتساب (تم استخدام api.whatsapp لضمان ظهور الرسالة)
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${PHONE_NUMBER}&text=${encoded}`;
             
-            document.getElementById('status-msg').innerText = "جاري فتح الواتساب...";
+            document.getElementById('status-msg').innerText = "جاري إيصال مشاعرك...";
 
-            // تأخير بسيط ليرى المستخدم تأثير القلوب ثم التحويل
             setTimeout(() => {
                 window.location.href = whatsappUrl;
             }, 600);
