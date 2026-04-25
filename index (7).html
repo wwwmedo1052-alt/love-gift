@@ -2,227 +2,435 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إلى قطتي الجميلة 🐾</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>عيد ميلاد داليا ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Marhey:wght@300;700&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #ff8fa3;
-            --secondary-color: #ff4d6d;
-        }
+            --dark-bg: #050505;
+            --gold: #c2a13e;
+            --section-gap: 600px; 
+        } 
 
-        body, html {
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; } 
+
+        body {
             margin: 0; padding: 0;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+            overflow-x: hidden;
             scroll-behavior: smooth;
-            min-height: 100vh;
+        } 
+
+        h1, h2, h3, .romantic-date { font-family: 'Marhey', cursive; text-align: center; }
+
+        /* تأثير الخلفية المتساقطة */
+        .bg-effect {
+            position: fixed; top: -50px;
+            pointer-events: none;
+            z-index: -1;
+            font-size: 20px;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* صفحة تسجيل الدخول - خلفية أتاري */
-        #login-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://wallpaperaccess.com/full/2316025.jpg') no-repeat center center/cover;
-            display: flex;
-            justify-content: center; align-items: center;
-            z-index: 1000;
-            transition: 1s;
+        /* واجهة الدخول المعدلة */
+        #login-overlay { 
+            position: fixed; inset: 0; 
+            background: radial-gradient(circle at center, #1a0505 0%, #000 100%); 
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 5000; transition: 1s ease-in-out; 
+        }
+        .login-card { 
+            background: rgba(10, 10, 10, 0.9); padding: 30px; border-radius: 35px; 
+            text-align: center; border: 2px solid var(--gold); width: 90%; max-width: 450px;
+            box-shadow: 0 0 20px rgba(194, 161, 62, 0.2);
+        }
+        #intro-text {
+            font-size: 1.2rem; line-height: 1.8; color: #fff; margin-bottom: 25px;
+            min-height: 150px; text-align: right;
+        }
+        .login-card button { 
+            padding: 15px 30px; background: linear-gradient(45deg, #8a6d1d, var(--gold)); 
+            color: black; border: none; border-radius: 25px; width: 100%; font-weight: 900; 
+            cursor: pointer; font-size: 1.2rem; opacity: 0; transition: 1s; display: none;
+        }
+        .login-card button.show { display: block; opacity: 1; }
+
+        #candle-section { display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center; background: #000; text-align: center; z-index: 4000; position: fixed; width: 100%; top: 0; }
+        #candle-msg { color: var(--gold); font-size: 1.3rem; margin-bottom: 25px; animation: fadeInOut 2s infinite; font-family: 'Marhey'; padding: 0 20px; }
+        
+        .candle-holder { position: relative; width: 40px; height: 140px; }
+        .candle-body { width: 30px; height: 100px; background: linear-gradient(to right, #eee, #fff, #ddd); border-radius: 5px; position: absolute; bottom: 0; left: 5px; }
+        .flame { 
+            width: 20px; height: 35px; background: radial-gradient(#fff, #ffb703, #ff7b00); border-radius: 50% 50% 20% 20%; 
+            animation: flicker 0.1s infinite alternate; position: absolute; top: -15px; left: 10px; cursor: pointer; 
+            box-shadow: 0 0 20px #ff7b00; transition: 0.5s;
+        }
+        .flame.blow-out { transform: rotate(-60deg) translateX(-100px) scale(0); opacity: 0; }
+
+        #music-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 6000;
+            background: rgba(194, 161, 62, 0.2); border: 1px solid var(--gold);
+            color: var(--gold); width: 45px; height: 45px; border-radius: 50%;
+            display: none; justify-content: center; align-items: center; cursor: pointer;
+            animation: musicRotate 4s linear infinite;
         }
 
-        .login-box {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 40px; border-radius: 30px;
-            text-align: center; border: 2px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(255, 143, 163, 0.5);
-            color: white;
+        .reveal { opacity: 0; transform: translateY(30px) scale(0.98); transition: all 0.7s ease-out; visibility: hidden; }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); visibility: visible; }
+
+        .helium-wrapper { display: flex; justify-content: center; gap: 40px; margin-bottom: 120px; }
+        .foil-balloon {
+            width: 70px; height: 95px; background: linear-gradient(135deg, #f9f295, #e0aa3e, #b8860b);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; display: flex; justify-content: center; align-items: center;
+            font-size: 45px; color: #fff; position: relative; animation: floatBalloon 4s ease-in-out infinite alternate;
+        }
+        .foil-balloon::after { content: ''; position: absolute; bottom: -100px; left: 50%; width: 1px; height: 100px; background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent); }
+
+        .romantic-date { font-size: 3.8rem; color: var(--gold); margin-bottom: 10px; }
+
+        #typingMessage { 
+            font-size: 1.3rem; color: #ddd; margin-top: 10px; text-align: center; 
+            margin-bottom: var(--section-gap); 
+            padding: 0 35px; line-height: 1.8; min-height: 80px; 
         }
 
-        input[type="password"] {
-            padding: 12px; border-radius: 25px; border: none;
-            width: 220px; text-align: center; font-size: 18px; margin-top: 15px;
+        .rope-container { position: relative; width: 100%; display: flex; justify-content: center; gap: 30px; margin-bottom: var(--section-gap); padding-top: 50px; }
+        .rope-line { position: absolute; top: 0; width: 100%; height: 3px; background: #3d2b19; }
+        .polaroid-hanging { background: #fff; padding: 10px 10px 30px 10px; width: 155px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); position: relative; animation: sway 5s ease-in-out infinite alternate; transform-origin: top center; transition: 0.4s; }
+        .polaroid-hanging img { width: 100%; height: 180px; object-fit: cover; }
+
+        .section-container { text-align: center; margin-bottom: var(--section-gap); padding: 0 15px; }
+
+        .game-heart { position: absolute; font-size: 40px; cursor: pointer; animation: floatUpGame 4s linear forwards; }
+        @keyframes balloonPop { 
+            0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 0px var(--gold)); } 
+            50% { transform: scale(2.2); opacity: 0.8; filter: drop-shadow(0 0 15px var(--gold)) brightness(1.5); } 
+            100% { transform: scale(3.5); opacity: 0; filter: blur(10px); } 
+        }
+        .popped { animation: balloonPop 0.3s ease-out forwards !important; pointer-events: none; }
+
+        .balloon-box { display: flex; flex-direction: row; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-top: 30px; }
+        .balloon-item { flex: 0 1 auto; cursor: pointer; text-align: center; animation: wobble 3s ease-in-out infinite alternate; }
+        .balloon-graphic { font-size: 60px !important; display: block; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+        .balloon-word { color: var(--gold); font-weight: bold; margin-top: 8px; font-size: 0.9rem; transition: 0.5s; font-family: 'Marhey'; }
+        #balloon-error { color: #ff4d4d; font-weight: bold; margin-top: 15px; font-size: 1.1rem; min-height: 1.5em; opacity: 0; transition: 0.3s; }
+
+        @keyframes wobble { from { transform: rotate(-5deg) translateY(0); } to { transform: rotate(5deg) translateY(-10px); } }
+
+        .why-love-box { background: rgba(194, 161, 62, 0.08); border: 1px solid rgba(194,161,62,0.2); padding: 25px; border-radius: 20px; margin: 0 auto; max-width: 500px; text-align: center; white-space: pre-wrap; line-height: 1.6; }
+        .love-line { padding: 15px 0; border-bottom: 1px solid rgba(194,161,62,0.1); filter: blur(10px); cursor: pointer; transition: 0.5s; }
+        .love-line.revealed { filter: blur(0); }
+
+        .honey-glow { animation: honeyPulse 1.5s infinite alternate; filter: drop-shadow(0 0 5px var(--gold)); }
+        @keyframes honeyPulse { from { filter: drop-shadow(0 0 5px var(--gold)); transform: scale(1); } to { filter: drop-shadow(0 0 20px var(--gold)); transform: scale(1.1); } }
+
+        .big-icon { font-size: 90px !important; cursor: pointer; display: inline-block; transition: 0.3s; }
+
+        @keyframes giftExplode { 
+            0% { transform: scale(1); filter: brightness(1); } 
+            50% { transform: scale(1.8); filter: brightness(2) blur(2px); opacity: 0.8; } 
+            100% { transform: scale(0); opacity: 0; } 
+        }
+        .gift-popped { animation: giftExplode 0.5s ease-out forwards !important; }
+
+        #video-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: none; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 9999; opacity: 0; transition: all 0.6s ease;
+        }
+        #video-modal.active { opacity: 1; }
+        .video-wrapper {
+            width: 90%; max-width: 450px; position: relative;
+            transform: translateY(100px) scale(0.8);
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid var(--gold); border-radius: 25px; background: #000;
+        }
+        #video-modal.active .video-wrapper { transform: translateY(0) scale(1); }
+        #mainVideo { width: 100%; display: block; border-radius: 24px; }
+        .close-vid-btn {
+            position: absolute; top: -20px; left: -20px; width: 45px; height: 45px; background: var(--gold);
+            border: 2px solid #000; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; color: #000; font-weight: bold;
         }
 
-        .login-box button {
-            display: block; margin: 20px auto 0;
-            padding: 10px 40px; border-radius: 20px; border: none;
-            background: var(--secondary-color); color: white;
-            cursor: pointer; font-weight: bold; transition: 0.3s;
-        }
+        @keyframes floatBalloon { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-30px) rotate(2deg); } }
+        @keyframes floatUpGame { from { transform: translateY(350px); opacity: 1; } to { transform: translateY(-50px); opacity: 0; } }
+        @keyframes flicker { 0% { transform: scale(1) rotate(-1deg); } 100% { transform: scale(1.05) rotate(1deg); } }
+        @keyframes sway { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+        @keyframes musicRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes fadeInOut { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        /* المحتوى الرئيسي */
-        #main-content {
-            display: none; text-align: center;
-            padding: 20px; animation: fadeIn 2s ease-in;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* خلفيات متغيرة حسب اليوم */
-        .bg-sunday { background: linear-gradient(135deg, #ff9a9e, #fad0c4); }
-        .bg-monday { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
-        .bg-tuesday { background: linear-gradient(135deg, #d4fc79, #96e6a1); }
-        .bg-wednesday { background: linear-gradient(135deg, #f6d365, #fda085); }
-        .bg-thursday { background: linear-gradient(135deg, #84fab0, #8fd3f4); }
-        .bg-friday { background: linear-gradient(135deg, #cfd9df, #e2ebf0); }
-        .bg-saturday { background: linear-gradient(135deg, #a6c0fe, #f68084); }
-
-        /* العداد */
-        .counter-card {
-            background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px);
-            margin: 20px auto; padding: 25px; border-radius: 20px;
-            max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        #counter { font-size: 22px; font-weight: bold; color: #444; }
-
-        /* شبكة الصور */
-        .grid-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px; max-width: 800px; margin: 40px auto;
-        }
-
-        .photo-box {
-            position: relative; aspect-ratio: 1; background: white;
-            border-radius: 15px; cursor: pointer; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.4s;
-        }
-
-        .photo-box img {
-            width: 100%; height: 100%; object-fit: cover;
-            opacity: 0; transition: 0.6s ease-in-out; transform: scale(1.3);
-        }
-
-        .photo-box.reveal img { opacity: 1; transform: scale(1); }
-        .photo-box::before { content: "🐾"; position: absolute; top: 40%; left: 45%; font-size: 30px; opacity: 0.5; }
-        .photo-box.reveal::before { display: none; }
-
-        .video-container {
-            max-width: 500px; margin: 40px auto; border-radius: 20px;
-            overflow: hidden; border: 5px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-
-        #gift-section { margin: 60px 0; padding-bottom: 50px; }
-        .gift-box { font-size: 80px; cursor: pointer; transition: 0.4s; display: inline-block; }
-        .gift-box:hover { transform: scale(1.2) rotate(15deg); }
-        .hidden-msg { display: none; margin-top: 20px; font-size: 24px; color: #d00; font-weight: bold; }
+        .footer { padding: 100px 0 150px; font-size: 1.8rem; color: var(--gold); text-align: center; line-height: 1.6; }
     </style>
 </head>
-<body>
+<body onload="startIntro()">
 
-    <!-- ملف الصوت الأساسي -->
-    <audio id="welcome-voice">
-        <source src="welcome.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bgMusic" loop><source src="https://b.top4top.io/m_3767yowp40.mp3" type="audio/mpeg"></audio>
+    <div id="music-btn" onclick="toggleMusic()">🎵</div>
 
-    <!-- شاشة تسجيل الدخول -->
+    <!-- شاشة الدخول بالرسالة الجديدة -->
     <div id="login-overlay">
-        <div class="login-box">
-            <h2 style="font-family: 'Dancing Script', cursive; font-size: 35px;">Hello Kitty! 🐈‍⬛</h2>
-            <p>ادخلي كلمة السر السرية</p>
-            <input type="password" id="pass-input" placeholder="Password...">
-            <button onclick="checkPass()">دخول ✨</button>
+        <div class="login-card">
+            <div id="intro-text"></div>
+            <button id="start-btn" onclick="enterWorld()">ادخلي عالمك الخاص ✨</button>
         </div>
+    </div> 
+
+    <div id="candle-section">
+        <div id="candle-msg">اتمني الشمعة المرة دي تكون بداية سنة كلها سعادة ليكي.. انفخي فيها ✨</div>
+        <div class="candle-holder">
+            <div class="candle-body"></div>
+            <div class="flame" id="main-flame" onclick="blowCandle()"></div>
+        </div>
+    </div> 
+
+    <div id="main-content" style="display: none;">
+        
+        <div class="header-group reveal" style="padding-top: 60px;">
+            <div class="helium-wrapper">
+                <div class="foil-balloon">3</div>
+                <div class="foil-balloon" style="animation-delay: 1.5s;">2</div>
+            </div>
+            <h2 class="romantic-date">٧ يونيو ٢٠٠٣</h2>
+            <div id="typingMessage"></div>
+        </div>
+
+        <div class="rope-container reveal">
+            <div class="rope-line"></div>
+            <div class="polaroid-hanging"><img src="pic1.jpg"></div>
+            <div class="polaroid-hanging"><img src="pic2.jpg"></div>
+        </div>
+
+        <div class="section-container reveal">
+            <h3 style="color:var(--gold); font-size: 1.6rem;">جمعي القلوب وهبسطك ❤️</h3>
+            <div id="heart-game" style="width: 90%; height: 350px; border: 2px dashed var(--gold); margin: 20px auto; position: relative; overflow: hidden; border-radius: 20px;"></div>
+            <div id="game-msg" style="display:none; color: var(--gold); font-size: 1.5rem; padding: 20px;">أنتي اللي سكنتي قلبي من أول يوم.. بحبك! 🥰</div>
+        </div>
+
+        <div class="section-container reveal">
+            <h3 style="color:var(--gold); font-size: 1.6rem;">فرقعي البلالين بالترتيب ي عمري 🎈</h3>
+            <div class="balloon-box">
+                <div class="balloon-item" onclick="checkBalloon(3, this)"><span class="balloon-graphic">🎈</span><div class="balloon-word" style="opacity:0">في الدنيا</div></div>
+                <div class="balloon-item" onclick="checkBalloon(1, this)"><span class="balloon-graphic">🎈</span><div class="balloon-word" style="opacity:0">أجمل</div></div>
+                <div class="balloon-item" onclick="checkBalloon(0, this)"><span class="balloon-graphic">🎈</span><div class="balloon-word" style="opacity:0">أنتي</div></div>
+                <div class="balloon-item" onclick="checkBalloon(2, this)"><span class="balloon-graphic">🎈</span><div class="balloon-word" style="opacity:0">بنوتة</div></div>
+            </div>
+            <div id="balloon-error">الترتيب غلط يا فروحة! ركزي 😂</div>
+        </div>
+
+        <div class="section-container reveal">
+            <h3 style="color:var(--gold); font-size: 1.6rem;">أنا ليه بحبك يا دودو؟ ❤️</h3>
+            <div class="why-love-box">
+                <div class="love-line" onclick="this.classList.add('revealed')">• عشان قلبك أبيض وبتحسي بيا من غير ما أتكلم.</div>
+                <div class="love-line" onclick="this.classList.add('revealed')">• عشان ضحكتك هي اللي بتهوّن عليا تعب اليوم كله.</div>
+                <div class="love-line" onclick="this.classList.add('revealed')">• عشان أنتي السند والحضن اللي دايماً برتاح فيه.</div>
+                <div class="love-line" onclick="this.classList.add('revealed')">• وعشان أنتي أجمل عوض من ربنا ليا في الدنيا كلها.</div>
+            </div>
+        </div>
+
+        <div class="section-container reveal">
+            <h3 style="color:var(--gold);">برطمان العسل دوسي عليه ودوقي كل مره بطعم مختلف </h3>
+            <div class="big-icon honey-glow" onclick="pullMessage(this)">🍯</div>
+            <div id="msgDisplay" style="color: var(--gold); font-size: 1.4rem; font-weight: bold; margin-top: 20px;"></div>
+        </div>
+
+        <div class="section-container reveal">
+            <h3 style="color:var(--gold);">لو وصلتي لهنا خدي بوسه 😚 💖</h3>
+            <div class="big-icon" style="animation: flicker 1.5s infinite;" onclick="openVideo('video2.mp4')">💖</div>
+        </div>
+
+        <div class="section-container reveal">
+            <div class="cake-wrapper">
+                <div class="big-icon" id="cake-final" onclick="handleExplosion('cake-final', 'cake-msg')">🎂</div>
+            </div>
+            <div id="cake-msg" style="display:none;" class="why-love-box">
+                <p style="text-align:center; font-size: 1.6rem; margin: 0;">كل سنة وأنتي ملكة قلبي وعمري اللي جاي كله ❤️💍</p>
+            </div>
+        </div>
+
+        <div class="section-container reveal">
+            <h3 style="color:var(--gold); font-size: 1.6rem; margin-bottom: 30px;">افتحي اول واحد براحه👀 🎁</h3>
+            <div id="gift1-wrap">
+                <div class="big-icon" id="gift1" onclick="handleGift1()">🎁</div>
+                <div id="res1" style="display:none;" class="why-love-box"></div>
+            </div>
+
+            <div id="gift2-wrap" style="display:none; margin-top: 600px;">
+                <h3 style="color:var(--gold); font-size: 1.6rem; margin-bottom: 30px;">افتحي الهدية التانية يا عمري 🎁</h3>
+                <div class="big-icon" id="gift2" onclick="handleGift2()">🎁</div>
+                <div id="res2" style="display:none;" class="why-love-box">
+                    <p style="margin-bottom: 15px;">الهدية الثانية: وعد مني إني هفضل أسعدك لآخر يوم في عمري 💍❤️</p>
+                    <img src="pic3.jpg" style="max-width:100%; border-radius:15px; border: 1px solid var(--gold);">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer reveal">كل سنة وأنتي ملكة قلبي.. <br> العيد الجاي في بيتنا سوا ❤️💍</div>
     </div>
 
-    <!-- المحتوى بعد الدخول -->
-    <div id="main-content">
-        <div class="counter-card">
-            <h2 style="margin-top:0;">إحنا مع بعض بقالنا:</h2>
-            <div id="counter"></div>
+    <!-- Modals -->
+    <div id="video-modal">
+        <div class="video-wrapper">
+            <div class="close-vid-btn" onclick="closeVideo()">✕</div>
+            <video id="mainVideo" playsinline controls><source src="" type="video/mp4"></video>
         </div>
-
-        <h3 style="margin-top: 40px;">ذكرياتنا (دوسي على المربعات) 📸</h3>
-        <div class="grid-container">
-            <div class="photo-box" onclick="reveal(this)"><img src="https://picsum.photos/400/400?random=1"></div>
-            <div class="photo-box" onclick="reveal(this)"><img src="https://picsum.photos/400/400?random=2"></div>
-            <div class="photo-box" onclick="reveal(this)"><img src="https://picsum.photos/400/400?random=3"></div>
-            <div class="photo-box" onclick="reveal(this)"><img src="https://picsum.photos/400/400?random=4"></div>
-            <div class="photo-box" onclick="reveal(this)"><img src="https://picsum.photos/400/400?random=5"></div>
-            <div class="photo-box" onclick="reveal(this)"><img src="https://picsum.photos/400/400?random=6"></div>
-        </div>
-
-        <div style="margin: 40px 0;">
-            <h3>رسالة صوتية لكِ 🎙️</h3>
-            <audio controls style="width: 280px;">
-                <source src="voice-msg.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div class="video-container">
-            <h3>فيديو مخصص لأميرتي 🎬</h3>
-            <video width="100%" controls>
-                <source src="your-video.mp4" type="video/mp4">
-            </video>
-        </div>
-
-        <section id="gift-section">
-            <h3>اضغطي على الهدية 🎁</h3>
-            <div class="gift-box" onclick="openGift()">🎁</div>
-            <div id="gift-status" style="margin-top:10px; color: #666;">افتحيها الآن!</div>
-            <div id="gift-msg" class="hidden-msg">بحبك يا قطتي ❤️</div>
-        </section>
     </div>
 
     <script>
-        // --- الإعدادات الخاصة ---
-        const CORRECT_PASS = "1234"; 
-        const START_DATE = new Date("October 10, 2023 00:00:00").getTime(); 
-        const WHATSAPP_PHONE = "201114689409"; 
-        const CALLMEBOT_API_KEY = "4916351"; 
-        // -----------------------
+        const introText = "داليا يا فروحة قلبي.. ❤️ مقدرتش أستنى ليوم عيد ميلادك وانتي وسط الكتب والمذاكرة.. فقررت أسبق الكل وأقولك كل سنة وأنتي أغلى حاجة في حياتي دلوقتي، عشان تكون دي الطاقة اللي تبدأي بيها امتحاناتك وتكسري الدنيا.. أنتي ملكة قلبي وعمري كله، ويارب تكون السنة دي بداية لكل حاجة حلوة ليكي.. أهلاً بيكي في عالمك الخاص يا ست البنات! ✨💍";
+        const internalWelcome = "في مثل هذا التاريخ، ولدتِ لتكوني النبض الذي يحيي قلبي.. كل عام وأنتِ الحب وكل ما أملك.. ❤️";
+        const gift1Text = "يا داليا ي احن بنوته ف الدنيا ❤️ مهما قلت اني بحبك مش هقدر اقولك شعوري ناحيتك ايه 😍 انا بقيت بتضايق لما احس ان في حاجه غلط او حاجه مزعلاكي 😟 مع ان ممكن ميبقاش في حاجه بس قلبي كدا أعمل اي بقا يعشقككككك عشقكككك ❤️‍🔥💘 تعرفي انتي وقفتي معايا ف عز ما كنت محتاجك فعلا 💎 كنتي حنينه عليا واستحملتيني كتييير 🥺 اه بزعلك عارف بس دا غباء مني علشان انا عبيط بس قلبي ابيض والله 🤍🤡\n\nبصي انا مش عاوزك تزعلي مني والعيد الجاي هتبقي ف بيتي ونحتفل بيه احتفاااال احلي من كدا بكتير 🏠💍🎉 كل سنه وانتي جنبي وكل سنه وانتي سندي وعمري وكل سنه وانتي حياتي كلها ي ست البنات 👸✨ كل سنه وانتي اجمل بنووووته فالدنيا كل سنه وانتي دنيتي 🎈🌍\n\nكل سنه وانتي اماني كل سنه وانتي الحضن اللي بنسي فيه هموم الدنيا 🫂🤗 كل سنه وانتي حبيبتي وامي وبنتي وكل ماليا.. مش عاوزك تزعلي مني علشان انا مليش غيرك والله 🧿❤️ ولو ف يوم زعلتك سامحيني علشان انتي قلبك ابيض ونا عبيط 😔 بس لو لفيت الدنيا كلها مش هلاقي احن ولا أجمل ولا ارق ولا احلي ولا سند اكتر منك 🥇🌟 لو طلبتي كنوز الدنيا كلها مش خساره فيكي 💰💎\n\nبصي عيد الميلاد دا مش علي قد المقام بس اللي عرفت اعمله والله 🎁🥹❤️";
+        
+        let heartsCaught = 0; let currentStep = 0;
+        const bgMusic = document.getElementById('bgMusic');
+        let musicWasPlaying = false;
 
-        function checkPass() {
-            const input = document.getElementById('pass-input').value;
-            if(input === CORRECT_PASS) {
-                document.getElementById('login-overlay').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('login-overlay').style.display = 'none';
-                    document.getElementById('main-content').style.display = 'block';
-                    
-                    // تشغيل صوت "نورتي يا قطتي"
-                    const audio = document.getElementById('welcome-voice');
-                    audio.play().catch(e => console.log("الصوت يحتاج تفاعل"));
-                    
-                    setDayBackground();
-                    startCounter();
-                }, 1000);
-            } else {
-                alert("كلمة السر غلط يا قطتي 🐈");
+        function startIntro() {
+            let i = 0; const container = document.getElementById('intro-text');
+            function type() { 
+                if (i < introText.length) { 
+                    container.innerHTML += introText.charAt(i); i++; 
+                    setTimeout(type, 50); 
+                } else {
+                    const btn = document.getElementById('start-btn');
+                    btn.classList.add('show');
+                }
             }
+            type();
         }
 
-        function setDayBackground() {
-            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-            const today = days[new Date().getDay()];
-            document.body.className = 'bg-' + today;
+        function createBgEffect() {
+            const emojis = ['🌹', '❤️', '🌸', '✨'];
+            const el = document.createElement('div'); el.className = 'bg-effect';
+            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 7000);
+        }
+        setInterval(createBgEffect, 500);
+
+        function enterWorld() { 
+            document.getElementById('login-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('login-overlay').style.display = 'none'; 
+                document.getElementById('candle-section').style.display = 'flex'; 
+            }, 800);
+        } 
+        
+        function blowCandle() {
+            document.getElementById('main-flame').classList.add('blow-out');
+            bgMusic.play().catch(() => {});
+            document.getElementById('music-btn').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('candle-section').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('candle-section').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    initReveal(); startTypingInternal(); spawnHearts();
+                }, 500);
+            }, 600);
         }
 
-        function startCounter() {
-            setInterval(function() {
-                const diff = new Date().getTime() - START_DATE;
-                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((diff % (1000 * 60)) / 1000);
-                document.getElementById("counter").innerHTML = d + " يوم، " + h + " ساعة، " + m + " دقيقة، " + s + " ثانية";
+        function toggleMusic() {
+            if (bgMusic.paused) { bgMusic.play(); document.getElementById('music-btn').innerText = "🎵"; }
+            else { bgMusic.pause(); document.getElementById('music-btn').innerText = "🔇"; }
+        }
+
+        function startTypingInternal() {
+            let i = 0; const container = document.getElementById('typingMessage');
+            function type() { if (i < internalWelcome.length) { container.innerHTML += internalWelcome.charAt(i); i++; setTimeout(type, 45); } }
+            type();
+        }
+
+        function typeGiftText(text, containerId) {
+            let i = 0; const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            function type() { if (i < text.length) { container.innerHTML += text.charAt(i); i++; setTimeout(type, 35); } }
+            type();
+        }
+
+        function spawnHearts() {
+            const area = document.getElementById('heart-game');
+            const timer = setInterval(() => {
+                if(heartsCaught >= 5) { clearInterval(timer); return; }
+                const h = document.createElement('div'); h.innerHTML = '❤️'; h.className = 'game-heart';
+                h.style.left = Math.random() * 80 + '%';
+                h.onclick = () => { 
+                    const computedStyle = window.getComputedStyle(h);
+                    h.style.top = computedStyle.top; h.style.left = computedStyle.left;
+                    h.style.animation = 'none'; h.classList.add('popped'); heartsCaught++; 
+                    if(heartsCaught === 5) { setTimeout(() => { area.style.display = 'none'; document.getElementById('game-msg').style.display = 'block'; }, 400); } 
+                    setTimeout(()=>h.remove(), 300); 
+                };
+                area.appendChild(h); setTimeout(() => h.remove(), 4000);
             }, 1000);
         }
 
-        function reveal(el) {
-            el.classList.add('reveal');
+        function checkBalloon(order, element) {
+            const word = element.querySelector('.balloon-word');
+            const errorDiv = document.getElementById('balloon-error');
+            if (order === currentStep) { 
+                word.style.opacity = '1'; element.style.pointerEvents = 'none'; currentStep++; 
+            } else { 
+                errorDiv.style.opacity = '1'; currentStep = 0; 
+                document.querySelectorAll('.balloon-item').forEach(item => item.querySelector('.balloon-word').style.opacity = '0');
+                setTimeout(() => { errorDiv.style.opacity = '0'; }, 2000);
+            }
         }
 
-        function openGift() {
-            document.getElementById('gift-msg').style.display = 'block';
-            document.querySelector('.gift-box').innerHTML = '💖';
-            document.getElementById('gift-status').innerText = "تم إرسال إشعار لي! 😉";
+        function handleExplosion(btnId, msgId) { 
+            document.getElementById(btnId).style.display = 'none'; 
+            document.getElementById(msgId).style.display = 'block';
+        }
+        
+        function handleGift1() { 
+            const gift = document.getElementById('gift1');
+            gift.classList.add('gift-popped'); 
+            setTimeout(() => {
+                gift.style.display = 'none';
+                document.getElementById('res1').style.display = 'block';
+                typeGiftText(gift1Text, 'res1');
+                setTimeout(() => { document.getElementById('gift2-wrap').style.display = 'block'; }, 2000);
+            }, 500);
+        }
 
-            // إرسال رسالة واتساب لك تلقائياً
-            const message = encodeURIComponent("انا فتحت الهديه وحلوه زيك");
-            const url = `https://api.callmebot.com/whatsapp.php?phone=${WHATSAPP_PHONE}&text=${message}&apikey=${CALLMEBOT_API_KEY}`;
-            
-            fetch(url, { mode: 'no-cors' });
+        function handleGift2() { handleExplosion('gift2', 'res2'); }
+        function initReveal() { 
+            const observer = new IntersectionObserver((entries) => { 
+                entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); }); 
+            }, { threshold: 0.05 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el)); 
+        }
+
+        function openVideo(src) { 
+            if (!bgMusic.paused) { musicWasPlaying = true; bgMusic.pause(); document.getElementById('music-btn').innerText = "🔇"; }
+            else { musicWasPlaying = false; }
+            const modal = document.getElementById('video-modal');
+            const video = document.getElementById('mainVideo');
+            video.src = src; modal.style.display = 'flex'; 
+            setTimeout(() => modal.classList.add('active'), 10);
+            video.load(); video.play(); 
+        }
+        
+        function closeVideo() { 
+            const modal = document.getElementById('video-modal');
+            modal.classList.remove('active');
+            document.getElementById('mainVideo').pause();
+            if (musicWasPlaying) { bgMusic.play(); document.getElementById('music-btn').innerText = "🎵"; }
+            setTimeout(() => modal.style.display = 'none', 600);
+        }
+
+        function pullMessage(el) { 
+            const msgs = ["أنتي أجمل قدر في حياتي ❤️", "ضحكتك هي اللي بتنورلي طريقي 🥰", "شكراً لإنك في حياتي يا دودو 💍", "مفيش حد في غلاوتك يا ملكة قلبي 👑"]; 
+            document.getElementById('msgDisplay').innerText = msgs[Math.floor(Math.random()*msgs.length)]; 
         }
     </script>
 </body>
-</html>
+    </html>
